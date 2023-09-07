@@ -39,8 +39,8 @@ const Login = () => {
       <div className="flex items-center justify-center px-3 py-3 max-sm:pb-5 rounded-lg">
         <div className="w-full">
           <div className="flex flex-row gap-3 items-center justify-center">
-            <img src={loginIcon} alt="loginIcon" className="w-10" />
-            <h2 className="text-center text-3xl  text-primary">
+            <img src={loginIcon} alt="loginIcon" className="w-10 max-xsm:w-7" />
+            <h2 className="text-center text-3xl max-sm:text-lg text-primary">
               Paper<span className="text-black">Link</span> Console
             </h2>
           </div>
@@ -52,7 +52,10 @@ const Login = () => {
             <Form className="mt-4 space-y-6">
               <div className="rounded-md shadow-sm -space-y-px">
                 <div>
-                  <label htmlFor="email" className="text-[#222529] mb-5">
+                  <label
+                    htmlFor="email"
+                    className="text-[#222529] mb-5 max-sm:text-sm"
+                  >
                     Email
                   </label>
                   <Field
@@ -61,7 +64,7 @@ const Login = () => {
                     type="email"
                     autoComplete="email"
                     placeholder="Email address"
-                    className="appearance-none rounded-lg relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
+                    className="appearance-none rounded-lg relative block w-full max-sm:py-2 py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
                   />
                   <ErrorMessage
                     name="email"
@@ -70,7 +73,10 @@ const Login = () => {
                   />
                 </div>
                 <div className="mt-4">
-                  <label htmlFor="password" className=" text-[#222529] mb-5">
+                  <label
+                    htmlFor="password"
+                    className=" text-[#222529] mb-5 max-sm:text-sm"
+                  >
                     Password
                   </label>
                   <div className="relative">
@@ -80,7 +86,7 @@ const Login = () => {
                       type={showPassword ? "text" : "password"}
                       autoComplete="current-password"
                       placeholder="Password"
-                      className={`appearance-none rounded-lg relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5`}
+                      className={`appearance-none rounded-lg max-sm:py-2 relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5`}
                     />
                     <button
                       type="button"
@@ -110,7 +116,7 @@ const Login = () => {
                   />
                   <label
                     htmlFor="rememberMe"
-                    className="ml-2 block text-sm text-gray-900"
+                    className="ml-2 block text-sm text-gray-900 max-sm:text-[0.6rem]"
                   >
                     Remember me
                   </label>
@@ -118,7 +124,7 @@ const Login = () => {
                 <div className="text-sm">
                   <a
                     // href="#"
-                    className="font-medium text-[#FF7373] hover:underline hover:text-[#FF7373] cursor-pointer"
+                    className="font-medium max-sm:text-[0.6rem] text-[#FF7373] hover:underline hover:text-[#FF7373] cursor-pointer"
                   >
                     Forgot your password?
                   </a>

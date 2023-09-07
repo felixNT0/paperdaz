@@ -93,8 +93,12 @@ function Register() {
           <div className="w-full ">
             <>
               <div className="flex flex-col gap-3 items-center justify-center text-primary ">
-                <h2 className="text-center text-3xl">Account Information</h2>
-                <p>Enter the required inforation to continue</p>
+                <h2 className="text-center text-3xl max-sm:text-lg">
+                  Account Information
+                </h2>
+                <p className="max-sm:text-sm">
+                  Enter the required inforation to continue
+                </p>
               </div>
               <Formik
                 initialValues={initialValues}
@@ -106,7 +110,7 @@ function Register() {
                     <div>
                       <label
                         htmlFor="Business name"
-                        className="text-[#222529] mb-5"
+                        className="text-[#222529] mb-5 max-sm:text-sm"
                       >
                         Business name
                       </label>
@@ -116,7 +120,7 @@ function Register() {
                         type="text"
                         autoComplete="text"
                         placeholder="Business name"
-                        className="appearance-none rounded-lg relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
+                        className="appearance-none rounded-lg max-sm:py-2 relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
                       />
                       {/* <ErrorMessage
                         name="business_name"
@@ -127,7 +131,7 @@ function Register() {
                     <div>
                       <label
                         htmlFor="Contact name"
-                        className="text-[#222529] mb-5"
+                        className="text-[#222529] mb-5 max-sm:text-sm"
                       >
                         Contact name
                       </label>
@@ -137,7 +141,7 @@ function Register() {
                         type="text"
                         autoComplete="text"
                         placeholder="Contact name"
-                        className="appearance-none rounded-lg relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
+                        className="appearance-none rounded-lg max-sm:py-2 relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
                       />
                       {/* <ErrorMessage
                         name="contact_name"
@@ -148,7 +152,7 @@ function Register() {
                     <div>
                       <label
                         htmlFor="Email address"
-                        className="text-[#222529] mb-5"
+                        className="text-[#222529] mb-5 max-sm:text-sm"
                       >
                         Email address
                       </label>
@@ -158,7 +162,7 @@ function Register() {
                         type="email"
                         autoComplete="email"
                         placeholder="Email address"
-                        className="appearance-none rounded-lg relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
+                        className="appearance-none rounded-lg max-sm:py-2 relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
                       />
                       {/* <ErrorMessage
                         name="email"
@@ -169,7 +173,7 @@ function Register() {
                     <div>
                       <label
                         htmlFor="Contact number"
-                        className="text-[#222529] mb-5"
+                        className="text-[#222529] mb-5 max-sm:text-sm"
                       >
                         Contact number
                       </label>
@@ -179,7 +183,7 @@ function Register() {
                         type="text"
                         autoComplete="text"
                         placeholder="Contact number "
-                        className="appearance-none rounded-lg relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
+                        className="appearance-none rounded-lg relative block w-full max-sm:py-2 py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
                       />
                       {/* <ErrorMessage
                         name="contact_number"
@@ -193,7 +197,7 @@ function Register() {
                     <button
                       onClick={handleNext}
                       type="button"
-                      className="group relative w-full flex justify-center py-3 px-4  text-sm font-medium rounded-md text-white bg-primary hover:bg-primary"
+                      className="group relative w-full flex justify-center max-sm:py-2 py-3 px-4  text-sm font-medium rounded-md text-white bg-primary hover:bg-primary"
                     >
                       Next
                     </button>
@@ -213,8 +217,10 @@ function Register() {
                 </p>
               </div>
               <div className="flex flex-row items-center justify-between mt-3">
-                <h1 className="text-primary text-lg">Credit Card</h1>
-                <div className="flex items-center justify-center gap-1">
+                <h1 className="text-primary text-lg max-sm:text-sm">
+                  Credit Card
+                </h1>
+                <div className="flex items-center justify-center max-sm:grid max-sm:grid-cols-2 gap-1">
                   <img src={masterCardIcon} alt="masterCardIcon" />
                   <img src={visaCardIcon} alt="visaCardIcon" />
                   <img src={amexCardIcon} alt="amexCardIcon" />
@@ -234,7 +240,7 @@ function Register() {
                         <div>
                           <label
                             htmlFor="Name of the card holder"
-                            className="text-[#222529] mb-5"
+                            className="text-[#222529] mb-5 max-sm:text-sm"
                           >
                             Name of the card holder
                           </label>
@@ -244,7 +250,7 @@ function Register() {
                             type="text"
                             autoComplete="text"
                             placeholder="Name of the card holder"
-                            className="appearance-none rounded-lg relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
+                            className="appearance-none max-sm:py-2 rounded-lg relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
                           />
                           {/* <ErrorMessage
                         name="business_name"
@@ -255,7 +261,7 @@ function Register() {
                         <div>
                           <label
                             htmlFor="Card number"
-                            className="text-[#222529] mb-5"
+                            className="text-[#222529] mb-5 max-sm:text-sm"
                           >
                             Card number
                           </label>
@@ -272,7 +278,7 @@ function Register() {
                               );
                               setFieldValue("cardNumber", formattedValue);
                             }}
-                            className="appearance-none rounded-lg relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
+                            className="appearance-none max-sm:py-2 rounded-lg relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
                           />
                           {/* <ErrorMessage
                         name="contact_name"
@@ -284,7 +290,7 @@ function Register() {
                           <div>
                             <label
                               htmlFor="Expiration date"
-                              className="text-[#222529] mb-5"
+                              className="text-[#222529] mb-5 max-sm:text-sm"
                             >
                               Expiration date
                             </label>
@@ -303,7 +309,7 @@ function Register() {
                                 );
                                 setFieldValue("expirationDate", formattedValue);
                               }}
-                              className="appearance-none rounded-lg relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
+                              className="appearance-none max-sm:py-2 rounded-lg relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
                             />
                             {/* <ErrorMessage
                           name="email"
@@ -314,7 +320,7 @@ function Register() {
                           <div>
                             <label
                               htmlFor="CVV"
-                              className="text-[#222529] mb-5"
+                              className="text-[#222529] mb-5 max-sm:text-sm"
                             >
                               CVV
                             </label>
@@ -325,7 +331,7 @@ function Register() {
                               maxLength={3}
                               autoComplete="text"
                               placeholder="000"
-                              className="appearance-none rounded-lg relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
+                              className="appearance-none rounded-lg  max-sm:py-2 relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
                             />
                             {/* <ErrorMessage
                           name="contact_number"
@@ -341,7 +347,7 @@ function Register() {
                           // onClick={handleNext}
                           disabled={!isValid || !dirty}
                           type="button"
-                          className="group relative w-full flex justify-center py-3 px-4  text-sm font-medium rounded-md text-white bg-primary hover:bg-primary"
+                          className="group relative w-full flex justify-center max-sm:py-2 py-3 px-4  text-sm font-medium rounded-md text-white bg-primary hover:bg-primary"
                         >
                           Pay
                         </button>

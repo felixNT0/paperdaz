@@ -36,10 +36,10 @@ function Footer() {
             </div>
           </div>
           <div className="mb-8">
-            <h2 className="text-xl max-sm:text-3xl font-semibold mb-4 underline">
+            <h2 className="text-2xl max-sm:text-xl font-semibold mb-4 underline">
               Company
             </h2>
-            <div className="max-sm:text-xl">
+            <div className="max-sm:text-lg">
               <p
                 onClick={() => {
                   navigate(navigations.LANDING_PAGE, {
@@ -81,10 +81,10 @@ function Footer() {
             </div>
           </div>
           <div className="mb-8">
-            <h2 className="text-xl max-sm:text-3xl  font-semibold mb-4 underline">
+            <h2 className="text-2xl max-sm:text-xl  font-semibold mb-4 underline">
               Products
             </h2>
-            <div className="max-sm:text-xl">
+            <div className="max-sm:text-lg">
               <p
                 onClick={() =>
                   navigate(navigations.PAPER_LINK, {
@@ -138,10 +138,10 @@ function Footer() {
             </div>
           </div>
           <div className="mb-8">
-            <h2 className="text-xl max-sm:text-3xl  font-semibold mb-4 underline">
+            <h2 className="text-2xl max-sm:text-xl  font-semibold mb-4 underline">
               Support
             </h2>
-            <div className="max-sm:text-xl">
+            <div className="max-sm:text-lg">
               <p
                 onClick={() => navigate(navigations.FAQ)}
                 className="mb-2 hover:underline cursor-pointer"
@@ -161,7 +161,7 @@ function Footer() {
             </div>
           </div>
           <div className="mb-8">
-            <h2 className="text-xl max-sm:text-3xl  font-semibold mb-4 underline">
+            <h2 className="text-2xl max-sm:text-xl  font-semibold mb-4 underline">
               Get Latest Updates
             </h2>
             <div className="flex mb-2 item-center justify-start max-md:justify-center">
