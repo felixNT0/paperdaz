@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: "Poppins";
+}
+
+html,
+body {
+  margin: 0 !important;
+  font-family: "Poppins";
+  /* -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #fff;
+  border-radius: 50px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #909090;
+}
+
+@supports (scrollbar-color: #fff #909090) {
+  * {
+    scrollbar-color: #fff #909090;
+    scrollbar-width: auto;
+  }
+}
