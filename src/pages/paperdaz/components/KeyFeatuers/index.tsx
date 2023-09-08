@@ -55,7 +55,7 @@ function KeyFeatures() {
         <Icon />
       </div>
       <div className=" lg:pb-10 lg:mx-20">
-        <div className="p-20 max-sm:flex max-sm:flex-col lg:grid lg:grid-cols-2 max-sm:p-5 grid max-sm:grid-cols-1 xl:grid xl:grid-cols-3 md:grid-cols-2 gap-10 items-center">
+        <div className="p-20 max-sm:flex max-sm:flex-col max-2xl:grid max-2xl:grid-cols-2 max-sm:p-5 grid max-sm:grid-cols-1 2xl:grid 2xl:grid-cols-3 md:grid-cols-2 gap-10 items-center">
           <div>
             <h1 className="text-black text-[30px] max-sm:text-center font-bold">
               Key <span className="text-primary">Features</span>
