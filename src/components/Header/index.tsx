@@ -8,7 +8,7 @@ function Header() {
   const { toggleLoginModal } = useAppContext();
   return (
     <div className="w-full bg-white fixed top-0 left-0 z-50 shadow-md">
-      <div className="max-sm:px-1 max-sm:pt-1.5 lg:mx-28 flex flex-row  items-center md:flex-row max-sm:justify-between  justify-between ">
+      <div className="max-sm:px-1 max-sm:pt-1.5 lg:mx-20 xl:mx-32 flex flex-row  items-center md:flex-row max-sm:justify-between  justify-between ">
         <img
           onClick={() =>
             navigate(navigations.LANDING_PAGE, { state: { home: "home" } })

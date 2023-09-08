@@ -9,7 +9,7 @@ import VideoPlay from "../../../../components/VideoPlay";
 
 function BriefDetails() {
   return (
-    <div className="p-10 mt-10 max-sm:mt-5 max-xsm:mx-0 max-xsm:p-2 max-sm:pt-7 lg:mx-32">
+    <div className="p-10 mt-10 max-sm:mt-5 max-xsm:mx-0 max-xsm:p-2 max-sm:pt-7 lg:mx-10 xl:mx-32">
       <div className="lg:relative mt-5 mb-10 flex flex-col md:flex-row justify-around items-center">
         <h3 className="text-[#77C360] text-start max-md:text-center text-[30px] font-bold max-md:mb-10">
           Paper to LINKS <br />{" "}
@@ -43,7 +43,7 @@ function BriefDetails() {
           <img src={arrowDown} alt="checkboxIcon" className="sm:mb-10" />
         </div>
 
-        <div className="">
+        <div>
           <Card
             icon={shareIcon}
             title="Share Paperlink"

@@ -5,6 +5,7 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./routers";
 import { AppContextProvider } from "./context";
 import "./index.css";
+// import Receipt from "./pages/receipt";
 
 const queryClient = new QueryClient();
 
@@ -13,6 +14,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <AppContextProvider>
         <RouterProvider router={router} />
+        {/* <Receipt /> */}
       </AppContextProvider>
     </QueryClientProvider>
   </React.StrictMode>

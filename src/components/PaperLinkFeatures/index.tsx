@@ -55,7 +55,7 @@ function PaperLinkFeatures() {
         <Icon />
       </div>
       <div className="lg:pb-10 lg:mx-20">
-        <div className="p-20 max-md:grid max-md:grid-col-1 max-sm:p-5 xl:grid xl:grid-cols-3 lg:grid lg:grid-cols-3 gap-10 justify-center items-center">
+        <div className="p-20 max-md:grid max-md:grid-col-1 max-sm:p-5 xl:grid xl:grid-cols-3 lg:grid lg:grid-cols-2 gap-10 justify-center items-center">
           <div>
             <h1 className="text-black text-[30px]  max-sm:text-center max-[992px]:mb-10">
               Paperlink <span className="text-primary">Features</span>

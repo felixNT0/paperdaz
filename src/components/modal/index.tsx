@@ -29,7 +29,7 @@ function Modal({ isModalOpen, toggleOpenModal, children, width }: Props) {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.5, opacity: 0 }}
             transition={{ ease: "easeInOut" }}
-            className={`relative bg-[#F2F9F1] ${
+            className={`relative bg-white ${
               width ? width : ""
             } rounded-lg p-4 z-80 max-sm:p-1 max-sm:m-5 max-sm:py-0 md:m-4 `}
           >

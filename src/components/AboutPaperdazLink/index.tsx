@@ -4,11 +4,11 @@ import rightIllustrationIcon from "../../assets/hero-shape-right.svg";
 function AboutPaperdazLink() {
   return (
     <div className="lg:relative" id="about-paper-link">
-      <div className="m-16 max-sm:m-10 mb-28 max-sm:mb-12 mx-20 max-md:mx-14 max-sm:mx-5 ">
+      <div className="m-16 max-sm:m-10 mb-28 max-sm:mb-12 xl:mx-20 lg:m-10 lg:mx-10 max-md:mx-14 max-sm:mx-5 ">
         <h1 className="text-primary max-lg:text-[30px] font-semibold text-5xl text-center mb-20">
           About <span className="text-black">Paperlink</span>
         </h1>
-        <div className="flex flex-row max-lg:flex-col max-lg:justify-center  justify-between items-center mx-20 max-md:mx-14 max-sm:mx-3">
+        <div className="flex flex-row max-lg:flex-col max-lg:justify-center justify-around items-center xl:mx-20 lg:mx-10 max-md:mx-14 max-sm:mx-3">
           <div className="p-15 bg-[#77C36017] max-sm:mb-16 max-md:mb-20">
             <img
               src={aboutLogo}
@@ -17,7 +17,7 @@ function AboutPaperdazLink() {
             />
           </div>
 
-          <div className="mx-20 max-md:mx-0">
+          <div className="xl:mx-20 lg:w-full lg:ml-10 max-md:mx-0">
             <p className="text-[#565656]">
               Paperlink is designed for Small businesses that does not have the
               time to register for a paperless app and configure each piece of
