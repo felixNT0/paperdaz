@@ -3,7 +3,7 @@ import leftIllustrationIcon from "../../../../assets/hero-shape-left.svg";
 
 function Illustration() {
   return (
-    <div>
+    <>
       <div className=" bg-white lg:relative">
         <h1 className="m-20 max-sm:m-10 max-lg:mt-20 text-black text-5xl max-sm:text-lg text-center">
           Which office will you be,{" "}
@@ -18,9 +18,13 @@ function Illustration() {
         </div>
       </div>
       <div>
-        <img src={paperdazIllustration} alt="paperdazIllustration" />
+        <img
+          src={paperdazIllustration}
+          alt="paperdazIllustration"
+          className="w-full"
+        />
       </div>
-    </div>
+    </>
   );
 }
 

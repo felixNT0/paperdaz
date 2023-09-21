@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap"); */
+
 :root {
   margin: 0 !important;
   padding: 0 !important;
@@ -12,8 +14,6 @@ html,
 body {
   margin: 0 !important;
   font-family: "Poppins";
-  /* -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; */
 }
 
 code {

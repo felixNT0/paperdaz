@@ -55,29 +55,38 @@ function PaperLinkFeatures() {
         <Icon />
       </div>
       <div className="lg:pb-10 lg:mx-20">
-        <div className="p-20 max-md:grid max-md:grid-col-1 max-sm:p-5 2xl:grid 2xl:grid-cols-3 max-2xl:grid max-2xl:grid-cols-2 gap-10 justify-center items-center">
-          <div>
-            <h1 className="text-black text-[30px]  max-sm:text-center max-[992px]:mb-10">
-              Paperlink <span className="text-primary">Features</span>
-            </h1>
-            <p className="text-black font-bold mt-5 max-sm:text-center">
-              Don’t hand paper at the office provide a link.
-            </p>
+        <div className="flex justify-center items-center">
+          <div className="p-20 max-sm:flex max-sm:flex-col max-sm:p-5 max-2xl:grid max-2xl:grid-cols-2 max-2xl:gap-10 2xl:grid 2xl:grid-cols-3 2xl:gap-14 ">
+            <div>
+              <h1 className="text-black text-[30px]  max-sm:text-center max-[992px]:mb-10">
+                Paperlink <span className="text-primary">Features</span>
+              </h1>
+              <p className="text-black font-bold mt-5 max-sm:text-center">
+                Don’t hand paper at the office provide a link.
+              </p>
+            </div>
+            {cards.map(
+              ({
+                title,
+                description,
+                defaultColor,
+                icon,
+                id,
+                addPadding,
+                h,
+              }) => (
+                <PaperLinkFeaturesCard
+                  key={id}
+                  title={title}
+                  icon={icon}
+                  addPadding={addPadding}
+                  h={h}
+                  defaultColor={defaultColor}
+                  description={description}
+                />
+              )
+            )}
           </div>
-
-          {cards.map(
-            ({ title, description, defaultColor, icon, id, addPadding, h }) => (
-              <PaperLinkFeaturesCard
-                key={id}
-                title={title}
-                icon={icon}
-                addPadding={addPadding}
-                h={h}
-                defaultColor={defaultColor}
-                description={description}
-              />
-            )
-          )}
         </div>
       </div>
     </div>

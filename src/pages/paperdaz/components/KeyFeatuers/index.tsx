@@ -50,38 +50,49 @@ function KeyFeatures() {
     },
   ];
   return (
-    <div className="lg:relative bg-[#EDFCE987]">
-      <div className="absolute max-lg:hidden   top-20 left-0 transform max-sm:translate-x-1/4 translate-x-3/4 -translate-y-1/4 w-20 ">
-        <Icon />
-      </div>
-      <div className=" lg:pb-10 lg:mx-20">
-        <div className="p-20 max-sm:flex max-sm:flex-col max-2xl:grid max-2xl:grid-cols-2 max-sm:p-5 grid max-sm:grid-cols-1 2xl:grid 2xl:grid-cols-3 md:grid-cols-2 gap-10 items-center">
-          <div>
-            <h1 className="text-black text-[30px] max-sm:text-center font-bold">
-              Key <span className="text-primary">Features</span>
-            </h1>
-            <p className="text-black font-bold mt-5">
-              Paperdaz will replace paper!
-            </p>
+    <>
+      <div className="lg:relative bg-[#EDFCE987]">
+        <div className="absolute max-lg:hidden  top-10 left-0 transform max-sm:translate-x-1/4 translate-x-3/4 -translate-y-1/4 w-20 ">
+          <Icon />
+        </div>
+        <div className=" lg:pb-10 lg:mx-20">
+          <div className="flex justify-center items-center">
+            <div className="p-20 max-sm:flex max-sm:flex-col max-sm:p-5 max-2xl:grid max-2xl:grid-cols-2 max-2xl:gap-10 2xl:grid 2xl:grid-cols-3 2xl:gap-14 ">
+              <div>
+                <h1 className="text-black text-[30px] max-sm:text-center font-bold">
+                  Key <span className="text-primary">Features</span>
+                </h1>
+                <p className="text-black font-bold mt-5">
+                  Paperdaz will replace paper!
+                </p>
+              </div>
+              {cards.map(
+                ({
+                  title,
+                  description,
+                  defaultColor,
+                  icon,
+                  id,
+                  addPadding,
+                }) => (
+                  <PaperLinkFeaturesCard
+                    key={id}
+                    title={title}
+                    icon={icon}
+                    addPadding={addPadding}
+                    defaultColor={defaultColor}
+                    description={description}
+                  />
+                )
+              )}
+            </div>
           </div>
-          {cards.map(
-            ({ title, description, defaultColor, icon, id, addPadding }) => (
-              <PaperLinkFeaturesCard
-                key={id}
-                title={title}
-                icon={icon}
-                addPadding={addPadding}
-                defaultColor={defaultColor}
-                description={description}
-              />
-            )
-          )}
         </div>
       </div>
       <div className="absolute max-lg:hidden  right-0 transform -translate-x-3/4 translate-y-1/4 bottom-28 w-20">
         <Icon />
       </div>
-    </div>
+    </>
   );
 }
 

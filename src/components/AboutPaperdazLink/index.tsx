@@ -13,7 +13,7 @@ function AboutPaperdazLink() {
             <img
               src={aboutLogo}
               alt="aboutLogo"
-              className="min-w-[300px] max-w-[500px] "
+              className="min-w-[300px] max-sm:w-[200px] max-w-[500px] "
             />
           </div>
 

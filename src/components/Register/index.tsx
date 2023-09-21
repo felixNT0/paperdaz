@@ -49,23 +49,20 @@ function Register() {
   });
 
   const formatCardNumber = (inputValue: any) => {
-    // Remove non-numeric characters and add hyphens
     const formattedValue = inputValue
       .replace(/\D/g, "")
       .replace(/(\d{4})/g, "$1-");
-    return formattedValue.substring(0, 19); // Limit to 19 characters
+    return formattedValue.substring(0, 19);
   };
 
   const formatExpirationDate = (inputValue: any) => {
-    // Remove non-numeric characters and add a slash
     const formattedValue = inputValue
       .replace(/\D/g, "")
       .replace(/(\d{2})/, "$1/");
-    return formattedValue.substring(0, 5); // Limit to MM/YY format
+    return formattedValue.substring(0, 5);
   };
 
   const handleSubmit = () => {
-    // Handle form submission here
     // console.log(values);
   };
 
@@ -298,7 +295,6 @@ function Register() {
                               id="email"
                               name="email"
                               type="email"
-                              // autoComplete="date"
                               placeholder="MM/YY"
                               value={formatExpirationDate(
                                 values.expirationDate

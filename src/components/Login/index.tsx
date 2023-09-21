@@ -6,6 +6,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useAppContext } from "../../context";
 import Modal from "../../components/modal";
+// import { Buffer } from "safe-buffer";
+// import jwt from "jsonwebtoken";
+
+// // Create a buffer from a string
+// const buffer = Buffer.from("Hello, world!", "utf-8");
+
+// const secretKey = String(process.env.DEFAULT_TOKEN) || "secrettoken";
+
+// export const generateToken = (id: any) => {
+//   return jwt.sign({ id }, secretKey, {
+//     expiresIn: "30d",
+//   });
+// };
 
 const Login = () => {
   const initialValues = {
@@ -13,6 +26,9 @@ const Login = () => {
     password: "",
     rememberMe: false,
   };
+
+  //  const salt = await bcrypt.genSalt(10);
+  //  const hashedPassword = await bcrypt.hash(password, salt);
 
   const { isLoginModalOpen, toggleLoginModal } = useAppContext();
 

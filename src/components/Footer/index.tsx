@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import footerLogo from "../../assets/footerlogo.svg";
 import {
   FaFacebookSquare,
@@ -11,8 +11,20 @@ import { useAppContext } from "../../context";
 
 function Footer() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { pathname } = location;
 
   const { toggleRegisterModal } = useAppContext();
+
+  const register = () => {
+    if (pathname !== navigations.PAPER_LINK) {
+      navigate(navigations.PAPER_LINK, {
+        state: { path: "register" },
+      });
+    } else {
+      toggleRegisterModal();
+    }
+  };
 
   return (
     <footer className="bg-black text-gray-300">
@@ -62,7 +74,7 @@ function Footer() {
               </p>
               <p
                 className="mb-2 hover:underline cursor-pointer"
-                onClick={toggleRegisterModal}
+                onClick={register}
               >
                 Register
               </p>

@@ -1,23 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import productCheckIcon from "../../assets/produceCheckIcon.svg";
 import productMenuIcon from "../../assets/produceMenuIcon.svg";
 import starIcon from "../../assets/greenStar.svg";
 import registerArrow from "../../assets/registerArrow.svg";
 import Icon from "../Icon";
 import { useAppContext } from "../../context";
+import { useNavigate } from "react-router-dom";
 
 const PaperdazProductsTable = ({
   toggleOpenModal,
 }: {
   toggleOpenModal: () => void;
 }) => {
-  // const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate();
 
-  // const handleCheckboxChange = () => {
-  //   setIsChecked(!isChecked);
-  // };
+  const { toggleRegisterModal, isRegisterModalOpen } = useAppContext();
 
-  const { toggleRegisterModal } = useAppContext();
+  const [isSwitched, setIsSwitched] = useState(false);
+
+  const [done, setDone] = useState<boolean>(false);
+  const [newUrl, setNewUrl] = useState<string>("");
 
   const [items, setItems] = useState([
     { feature: "Team Member", price: 2, quantity: 1 },
@@ -33,6 +35,7 @@ const PaperdazProductsTable = ({
       otherFeature: "(One time charge)",
       price: 1,
       quantity: 0,
+      isChecked: false,
       icon: (
         <input
           // checked={isChecked}
@@ -44,32 +47,87 @@ const PaperdazProductsTable = ({
     },
   ]);
 
-  const incrementQuantity = (index: any) => {
+  const toggleSwitch = () => {
+    setIsSwitched(!isSwitched);
+  };
+
+  const incrementQuantity = (index: number) => {
     const updatedItems = [...items];
     updatedItems[index].quantity++;
     setItems(updatedItems);
+    updateURLParams(updatedItems);
   };
 
-  const decrementQuantity = (index: any) => {
+  const decrementQuantity = (index: number) => {
     const updatedItems = [...items];
     if (updatedItems[index].quantity > 0) {
       updatedItems[index].quantity--;
       setItems(updatedItems);
+      updateURLParams(updatedItems);
     }
+  };
+
+  const params: { [key: string]: string | number | boolean } = {
+    business_page: true,
+    team_member: 1,
+    paperlink_page: 1,
+    fillable_pdf: 0,
+    white_glove_service: false,
+    monthly_plan: isSwitched ? true : false,
+  };
+
+  if (isSwitched) {
+    params.monthly_plan = true;
+  } else {
+    params.monthly_plan = false;
+  }
+
+  const updateURLParams = (updatedItems?: any[]) => {
+    updatedItems?.forEach((item) => {
+      if (item.feature === "Business Page") {
+        params.business_page = true;
+      }
+      if (item.feature === "Team Member") {
+        params.team_member = item.quantity;
+      }
+      if (item.feature === "Paperlink Page") {
+        params.paperlink_page = item.quantity;
+      }
+      if (item.feature === "Fillable PDF") {
+        params.fillable_pdf = item.quantity;
+      }
+      if (item.feature === "White Glove Service") {
+        params.white_glove_service = true;
+      }
+    });
+
+    const queryString = Object.keys(params)
+      .filter((key) => params[key] !== undefined)
+      .map((key) => `${key}=${encodeURIComponent(params[key])}`)
+      .join("&");
+
+    const url = `https://dev.paperlink.app/package?tablevel=1&${queryString}`;
+    setNewUrl(url);
   };
 
   const getTotalAmount = () => {
     return items.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
-  const [isSwitched, setIsSwitched] = useState(false);
+  console.log(newUrl);
 
-  const toggleSwitch = () => {
-    setIsSwitched(!isSwitched);
-  };
+  useEffect(() => {
+    if (done) {
+      window.location.href = newUrl;
+    }
+  }, [done]);
+
+  useEffect(() => {
+    updateURLParams();
+  }, []);
 
   return (
-    <>
+    <div id="register">
       <div className="lg:relative max-sm:hidden bg-[#EDFCE987]">
         <img
           src={starIcon}
@@ -360,7 +418,7 @@ const PaperdazProductsTable = ({
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
