@@ -114,8 +114,6 @@ const PaperdazProductsTable = ({
     return items.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
-  console.log(newUrl);
-
   useEffect(() => {
     if (done) {
       window.location.href = newUrl;
