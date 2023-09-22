@@ -14,7 +14,7 @@ function AboutUs() {
           <div className="flex max-lg:hidden items-center justify-center ">
             <div className="w-[40%]   h-fit" />
 
-            <div className="w-[60%]   min-h-[470px] max-lg:h-auto bg-[#77C36017]" />
+            <div className="w-[60%]   min-h-[460px] max-lg:h-auto bg-[#77C36017]" />
           </div>
           <div className="flex justify-center items-center">
             <div className="lg:absolute  py-10   z-10 top-0  flex flex-row max-sm:flex-col justify-center gap-10 lg:mx-28 items-center">

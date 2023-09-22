@@ -10,7 +10,7 @@ import Card from "./Card";
 function WhatPaperdazaLinkDoes() {
   return (
     <div
-      className="p-10 max-sm:p-5 mt-7 mx-20 max-sm:mx-5 max-xsm:mx-0"
+      className="p-10 max-sm:p-5 mt-7 mx-24 max-sm:mx-5 max-xsm:mx-0"
       id="paperdaz-link"
     >
       <h3 className="text-[#77C360] text-center text-[30px] font-bold">
@@ -35,13 +35,13 @@ function WhatPaperdazaLinkDoes() {
         />
       </div>
       <div className="flex justify-center items-center">
-        <div className="flex max-md:flex-col md:grid md:grid-cols-3 lg:grid-cols-5 md:gap-10 max-md:items-center items-start justify-center mt-[50px] mb-10 max-md:mt-5">
+        <div className="flex max-md:flex-col md:flex-row  md:gap-0 max-md:items-center items-start justify-center mt-[50px] mb-10 max-md:mt-5">
           <Card
             icon={checkbox}
             title="Complete"
             description="Annotations, name, date, signature and initial stickers makes completing a file so fast!"
           />
-          <div className="sm:mb-[70px] md:hidden lg:block lg:mt-24">
+          <div className="sm:mb-[70px] md:hidden 2xl:block lg:mt-24">
             <img
               src={arrowUp}
               alt="checkboxIcon"
@@ -54,7 +54,7 @@ function WhatPaperdazaLinkDoes() {
             title="Sign"
             description="Signing and initialing  a document fast and simple with Paperlink stickers."
           />
-          <div className="sm:mb-[50px] md:hidden lg:block lg:mt-24">
+          <div className="sm:mb-[50px] md:hidden 2xl:block lg:mt-24">
             <img
               src={arrowDown}
               alt="checkboxIcon"

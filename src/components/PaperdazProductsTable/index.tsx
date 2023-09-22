@@ -5,21 +5,20 @@ import starIcon from "../../assets/greenStar.svg";
 import registerArrow from "../../assets/registerArrow.svg";
 import Icon from "../Icon";
 import { useAppContext } from "../../context";
-import { useNavigate } from "react-router-dom";
 
 const PaperdazProductsTable = ({
   toggleOpenModal,
 }: {
   toggleOpenModal: () => void;
 }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const { toggleRegisterModal, isRegisterModalOpen } = useAppContext();
+  const { toggleRegisterModal } = useAppContext();
 
   const [isSwitched, setIsSwitched] = useState(false);
 
-  const [done, setDone] = useState<boolean>(false);
-  const [newUrl, setNewUrl] = useState<string>("");
+  // const [done, setDone] = useState<boolean>(false);
+  // const [newUrl, setNewUrl] = useState<string>("");
 
   const [items, setItems] = useState([
     { feature: "Team Member", price: 2, quantity: 1 },
@@ -101,24 +100,24 @@ const PaperdazProductsTable = ({
       }
     });
 
-    const queryString = Object.keys(params)
-      .filter((key) => params[key] !== undefined)
-      .map((key) => `${key}=${encodeURIComponent(params[key])}`)
-      .join("&");
+    // const queryString = Object.keys(params)
+    //   .filter((key) => params[key] !== undefined)
+    //   .map((key) => `${key}=${encodeURIComponent(params[key])}`)
+    // .join("&");
 
-    const url = `https://dev.paperlink.app/package?tablevel=1&${queryString}`;
-    setNewUrl(url);
+    // const url = `https://dev.paperlink.app/package?tablevel=1&${queryString}`;
+    // setNewUrl(url);
   };
 
   const getTotalAmount = () => {
     return items.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
-  useEffect(() => {
-    if (done) {
-      window.location.href = newUrl;
-    }
-  }, [done]);
+  // useEffect(() => {
+  //   if (done) {
+  //     window.location.href = newUrl;
+  //   }
+  // }, [done]);
 
   useEffect(() => {
     updateURLParams();

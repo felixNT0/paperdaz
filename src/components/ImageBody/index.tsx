@@ -4,11 +4,7 @@ function ImageBody() {
   return (
     <>
       <div className="relative mt-20">
-        <img
-          src={bg}
-          alt="bg"
-          className="w-full rounded-none lg:min-h-[90vh] h-auto "
-        />
+        <img src={bg} alt="bg" className="w-full rounded-none" />
         <div className="absolute lg:-top-32 lg:left-20 left-32 max-sm:left-0 max-[280]:-left-10 max-md:left-7 max-xsm:left-0 md:left-0 inset-0 flex flex-col justify-center items-start p-8 text-white">
           <h3 className="text-[70px] max-lg:text-[40px] max-[280]:text-sm max-sm:text-lg max-xsm:text-sm font-bold z-10">
             <span className=""> It is easy to go </span>

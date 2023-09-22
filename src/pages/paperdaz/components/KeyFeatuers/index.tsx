@@ -57,7 +57,7 @@ function KeyFeatures() {
         </div>
         <div className=" lg:pb-10 lg:mx-20">
           <div className="flex justify-center items-center">
-            <div className="p-20 max-sm:flex max-sm:flex-col max-sm:p-5 max-2xl:grid max-2xl:grid-cols-2 max-2xl:gap-10 2xl:grid 2xl:grid-cols-3 2xl:gap-14 ">
+            <div className="p-20 max-sm:flex max-sm:flex-col max-sm:p-5 max-xl:grid max-xl:grid-cols-2 max-xl:gap-10 xl:grid xl:grid-cols-3 2xl:gap-14 ">
               <div>
                 <h1 className="text-black text-[30px] max-sm:text-center font-bold">
                   Key <span className="text-primary">Features</span>
