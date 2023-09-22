@@ -62,7 +62,7 @@ function KeyFeatures() {
                 <h1 className="text-black text-[30px] max-sm:text-center font-bold">
                   Key <span className="text-primary">Features</span>
                 </h1>
-                <p className="text-black font-bold mt-5">
+                <p className="text-black font-bold mt-5 max-sm:text-center">
                   Paperdaz will replace paper!
                 </p>
               </div>
@@ -88,9 +88,9 @@ function KeyFeatures() {
             </div>
           </div>
         </div>
-      </div>
-      <div className="absolute max-lg:hidden  right-0 transform -translate-x-3/4 translate-y-1/4 bottom-28 w-20">
-        <Icon />
+        <div className="absolute max-lg:hidden  right-0 transform -translate-x-3/4 translate-y-1/4 bottom-20 w-20">
+          <Icon />
+        </div>
       </div>
     </>
   );

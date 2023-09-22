@@ -49,7 +49,7 @@ function PaperdazLap() {
         <div className="absolute max-lg:hidden top-20 left-0 transform max-sm:translate-x-1/4 translate-x-3/4 -translate-y-1/4 w-20 ">
           <Icon />
         </div>
-        <div className="bg-[#EDFCE987] lg:pb-20 max-sm:pb-10 max-[1200px]:pb-20 item-center ">
+        <div className="bg-[#EDFCE987] lg:pb-20 max-sm:pb-10 max-xl:pb-20 item-center ">
           <div className="flex flex-row max-sm:flex-col max-sm:gap-10 gap-20 justify-center items-center py-20 max-sm:py-10">
             <img
               src={paperdazLabIcon}
@@ -62,7 +62,7 @@ function PaperdazLap() {
               on the launch of each of these products!
             </p>
           </div>
-          <div className="flex flex-row max-lg:grid max-lg:grid-cols-2 max-[1200px]:grid  max-[1200px]:grid-cols-2 [350px]:mx-3  max-sm:flex max-sm:flex-col justify-center gap-10 items-center  ">
+          <div className="flex flex-row max-lg:grid max-lg:grid-cols-2 max-xl:grid  max-xl:grid-cols-2 max-sm:mx-5  max-sm:flex max-sm:flex-col justify-center gap-10 items-center  ">
             {cardItems.map(({ icon, title, description, id, iconWidth }) => (
               <div key={id} className="flex justify-center items-center">
                 <PaperdazLabCard
