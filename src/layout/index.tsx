@@ -23,7 +23,7 @@ function Layout({ children }: any) {
       searchParams.delete("q");
       navigate({ search: "?" + searchParams.toString() });
     }
-  }, [isLoginModalOpen, navigate, location.search]);
+  }, [isLoginModalOpen]);
 
   useEffect(() => {
     if (isRegisterModalOpen) {

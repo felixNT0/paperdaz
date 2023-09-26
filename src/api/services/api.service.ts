@@ -1,28 +1,19 @@
-import { useQuery } from "react-query";
-import ApiAxiosInstance from "../index";
+import { useMutation, useQuery } from "react-query";
+import {
+  GetAllFaqType,
+  GetCategoriesFaqType,
+  ICreateCardForUserPayload,
+  ICreateUserPayload,
+  ILoginPayload,
+  ILoginSuccessResponse,
+  ISubscriptionPayload,
+  IValidateCardPayload,
+} from "../../types";
+import { ApiAxiosInstance, DevApiAxiosInstance } from "../../api";
 
 const GET_ALL_FAQ_DATA = "GET_ALL_FAQ_DATA";
 const GET_ALL_CATEGORIES_PAPERLINK_QUESTIONS =
   "GET_ALL_CATEGORIES_PAPERLINK_QUESTIONS";
-
-export type GetAllFaqType = {
-  id: number;
-  question: string;
-  answer: string;
-  position: any | null;
-  createdAt: string;
-  updatedAt: string;
-  categoryId: number | null;
-};
-
-export type GetCategoriesFaqType = {
-  id: number;
-  name: string;
-  position: number | null;
-  createdAt: string;
-  updatedAt: string;
-  faqs: GetAllFaqType[];
-};
 
 const getAllFAQ = async (): Promise<GetAllFaqType[]> => {
   const response = await ApiAxiosInstance.get<GetAllFaqType[]>(`/faq`);
@@ -47,4 +38,57 @@ export const useGetCategoriesPaperLinkQuestions = () => {
     [GET_ALL_CATEGORIES_PAPERLINK_QUESTIONS],
     getCategoriesPaperLinkQuestions
   );
+};
+
+export const loginUser = async (payload: ILoginPayload) => {
+  const response = await ApiAxiosInstance.post<ILoginSuccessResponse>(
+    `/authentication`,
+    payload
+  );
+  return response.data;
+};
+
+export const useLoginUserMutation = () => {
+  return useMutation(loginUser);
+};
+
+export const createCardForUser = async (payload: ICreateCardForUserPayload) => {
+  const response = await DevApiAxiosInstance.post<any>(`/cards`, payload);
+  return response.data;
+};
+
+export const useCreateCardForUserMutation = () => {
+  return useMutation(createCardForUser);
+};
+
+export const validateCard = async (payload: IValidateCardPayload) => {
+  const response = await DevApiAxiosInstance.post<any>(`/cards`, payload);
+  return response.data;
+};
+
+export const useValidateCardMutation = () => {
+  return useMutation(validateCard);
+};
+
+export const createUser = async (payload: ICreateUserPayload) => {
+  const response = await DevApiAxiosInstance.post<any>(`/users`, payload);
+  return response.data;
+};
+
+export const useCreateUserMutation = () => {
+  return useMutation(createUser);
+};
+
+export const createSubscriptionForUser = async (
+  payload: ISubscriptionPayload
+) => {
+  const response = await DevApiAxiosInstance.post<any>(
+    `/subscriptions`,
+    payload
+  );
+  return response.data;
+};
+
+export const useCreateSubscriptionForUserMutation = () => {
+  return useMutation(createSubscriptionForUser);
 };

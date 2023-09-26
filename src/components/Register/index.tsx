@@ -1,6 +1,6 @@
 import RegisterModal from "../../components/modal/register-modal";
 import { useAppContext } from "../../context";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import masterCardIcon from "../../assets/masterCardIcon.svg";
@@ -8,22 +8,50 @@ import visaCardIcon from "../../assets/visaCardIcon.svg";
 import amexCardIcon from "../../assets/amexCardIcon.svg";
 import discoverCardIcon from "../../assets/discoverCardIcon.svg";
 import { useAnimation } from "framer-motion";
+import {
+  useCreateCardForUserMutation,
+  useCreateSubscriptionForUserMutation,
+  useCreateUserMutation,
+  useValidateCardMutation,
+} from "../../api/services/api.service";
+import { useNavigate } from "react-router-dom";
+import { ICreateUserPayload } from "../../types";
+import navigations from "../../navigations";
 
 function Register() {
-  const initialValues = {
+  const { mutate, isSuccess, data } = useCreateUserMutation();
+  const { mutate: validateCard, isSuccess: cardValidatedSuccessfully } =
+    useValidateCardMutation();
+  const { mutateAsync: createCard, isSuccess: cardCreatedSuccessfully } =
+    useCreateCardForUserMutation();
+  const {
+    mutateAsync: createSubscription,
+    isSuccess: cardSubscriptionSuccessfully,
+  } = useCreateSubscriptionForUserMutation();
+  const initialValuesToCreateUser = {
     email: "",
-    password: "",
-    business_name: "",
-    cardNumber: "",
-    expirationDate: "",
+    firstName: "",
+    lastName: "",
+    phone: "",
+    companyName: "",
+  };
+  const initialValuesToCreateCard = {
+    card_holder_name: "",
+    card_number: "",
+    card_expire: "",
     cvv: "",
+    action: "testCard",
+    userId: null,
   };
   const steps = [{ key: 1 }, { key: 2 }];
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
-  const { isRegisterModalOpen, toggleRegisterModal } = useAppContext();
+  const { isRegisterModalOpen, toggleRegisterModal, tableSubscriptionPayload } =
+    useAppContext();
 
   const controls = useAnimation();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (currentStepIndex) {
@@ -31,39 +59,64 @@ function Register() {
     }
   }, [currentStepIndex, controls]);
 
-  const validationSchema = Yup.object().shape({
+  const validationSchemaToCreateUser = Yup.object().shape({
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
-    password: Yup.string().required("Password is required"),
-    business_name: Yup.string().required("Name of the card holder is required"),
-    cardNumber: Yup.string()
-      .required("Card number is required")
-      .matches(/^\d{4}-\d{4}-\d{4}-\d{4}$/, "Invalid card number"),
-    expirationDate: Yup.string()
-      .required("Expiration date is required")
-      .matches(/^(0[1-9]|1[0-2])\/\d{2}$/, "Invalid expiration date"),
-    cvv: Yup.string()
-      .required("CVV is required")
-      .matches(/^\d{3}$/, "Invalid CVV"),
+    firstName: Yup.string().required("firstName is required"),
+    companyName: Yup.string().required("Business Name is required"),
+    phone: Yup.string().required("phone is required"),
+  });
+
+  const validationSchemaToValidateCard = Yup.object().shape({
+    card_holder_name: Yup.string().required("card holder name is required"),
+    card_number: Yup.string().required("card number is required"),
+    cvv: Yup.string().required("cvv is required"),
+    card_expire: Yup.string().required("card expire is required"),
   });
 
   const formatCardNumber = (inputValue: any) => {
-    const formattedValue = inputValue
-      .replace(/\D/g, "")
-      .replace(/(\d{4})/g, "$1-");
-    return formattedValue.substring(0, 19);
+    const numericValue = inputValue.replace(/\D/g, "");
+
+    const formattedValue = numericValue.match(/\d{1,4}/g);
+
+    return (formattedValue || []).join("-").substring(0, 19);
   };
 
   const formatExpirationDate = (inputValue: any) => {
-    const formattedValue = inputValue
-      .replace(/\D/g, "")
-      .replace(/(\d{2})/, "$1/");
-    return formattedValue.substring(0, 5);
+    const numericValue = inputValue.replace(/\D/g, "");
+
+    if (numericValue.length > 4) {
+      return numericValue.slice(0, 4);
+    }
+
+    if (numericValue.length >= 3) {
+      const month = numericValue.slice(0, 2);
+      const year = numericValue.slice(2);
+      return `${month}/${year}`;
+    } else {
+      return numericValue;
+    }
+  };
+  const handleSubmitCreateUser = (values: ICreateUserPayload) => {
+    mutate(values);
   };
 
-  const handleSubmit = () => {
-    // console.log(values);
+  const handleSubmitValidateCard = (values: any) => {
+    const month = values.card_expire.substring(0, 2);
+    const year = values.card_expire.slice(-2);
+
+    const { card_expire, ...others } = values;
+    const cardNumberWithoutDashes = others.card_number.replace(/-/g, "");
+
+    const payload = {
+      ...others,
+      exp_month: month,
+      exp_year: year,
+      card_number: cardNumberWithoutDashes,
+    };
+    localStorage.setItem("card", JSON.stringify(payload));
+    validateCard(payload);
   };
 
   const handleNext = () => {
@@ -77,6 +130,49 @@ function Register() {
       setCurrentStepIndex(currentStepIndex - 1);
     }
   };
+
+  const createCardAndSubscription = async () => {
+    const cardStored = localStorage.getItem("card");
+    const userId = localStorage.getItem("userId") || "";
+
+    let card;
+
+    if (cardStored) {
+      card = JSON.parse(cardStored);
+    } else {
+      card = initialValuesToCreateCard;
+    }
+    const { action, ...others } = card;
+    const newCard = {
+      ...others,
+      userId: userId,
+    };
+    await createCard(newCard);
+    await createSubscription({ ...tableSubscriptionPayload, userId: userId });
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      localStorage.setItem("userId", data?.id);
+      handleNext();
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (cardValidatedSuccessfully) {
+      createCardAndSubscription();
+    }
+  }, [cardValidatedSuccessfully]);
+
+  useEffect(() => {
+    if (cardSubscriptionSuccessfully && cardCreatedSuccessfully) {
+      localStorage.removeItem("userId");
+      localStorage.removeItem("card");
+      navigate(navigations.LANDING_PAGE, {
+        state: { subscriptionSuccessful: true },
+      });
+    }
+  }, [cardCreatedSuccessfully, cardSubscriptionSuccessfully]);
 
   return (
     <RegisterModal
@@ -94,112 +190,159 @@ function Register() {
                   Account Information
                 </h2>
                 <p className="max-sm:text-sm">
-                  Enter the required inforation to continue
+                  Enter the required fields to continue
                 </p>
               </div>
               <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}
+                initialValues={initialValuesToCreateUser}
+                validationSchema={validationSchemaToCreateUser}
+                onSubmit={handleSubmitCreateUser}
               >
-                <Form className="mt-4 space-y-6">
-                  <div className="rounded-md shadow-sm -space-y-px">
-                    <div>
-                      <label
-                        htmlFor="Business name"
-                        className="text-[#222529] mb-5 max-sm:text-sm"
-                      >
-                        Business name
-                      </label>
-                      <Field
-                        id="business_name"
-                        name="business_name"
-                        type="text"
-                        autoComplete="text"
-                        placeholder="Business name"
-                        className="appearance-none rounded-lg max-sm:py-2 relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
-                      />
-                      {/* <ErrorMessage
-                        name="business_name"
-                        component="p"
-                        className="mt-2 text-sm text-red-600 mb-3"
-                      /> */}
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="Contact name"
-                        className="text-[#222529] mb-5 max-sm:text-sm"
-                      >
-                        Contact name
-                      </label>
-                      <Field
-                        id="contact_name"
-                        name="contact_name"
-                        type="text"
-                        autoComplete="text"
-                        placeholder="Contact name"
-                        className="appearance-none rounded-lg max-sm:py-2 relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
-                      />
-                      {/* <ErrorMessage
-                        name="contact_name"
-                        component="p"
-                        className="mt-2 text-sm text-red-600 mb-3"
-                      /> */}
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="Email address"
-                        className="text-[#222529] mb-5 max-sm:text-sm"
-                      >
-                        Email address
-                      </label>
-                      <Field
-                        id="email"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        placeholder="Email address"
-                        className="appearance-none rounded-lg max-sm:py-2 relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
-                      />
-                      {/* <ErrorMessage
-                        name="email"
-                        component="p"
-                        className="mt-2 text-sm text-red-600 mb-3"
-                      /> */}
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="Contact number"
-                        className="text-[#222529] mb-5 max-sm:text-sm"
-                      >
-                        Contact number
-                      </label>
-                      <Field
-                        id="contact_number"
-                        name="contact_number "
-                        type="text"
-                        autoComplete="text"
-                        placeholder="Contact number "
-                        className="appearance-none rounded-lg relative block w-full max-sm:py-2 py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
-                      />
-                      {/* <ErrorMessage
-                        name="contact_number"
-                        component="p"
-                        className="mt-2 text-sm text-red-600 mb-3"
-                      /> */}
-                    </div>
-                  </div>
+                {(formik) => {
+                  const { isValid, dirty, values, handleChange, handleBlur } =
+                    formik;
+                  return (
+                    <Form className="mt-4 space-y-6">
+                      <div className="rounded-md shadow-sm -space-y-px">
+                        <div>
+                          <label
+                            htmlFor="Business name"
+                            className="text-[#222529] mb-5 max-sm:text-sm"
+                          >
+                            Business name
+                          </label>
+                          <Field
+                            value={values.companyName}
+                            id="companyName"
+                            name="companyName"
+                            type="text"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            autoComplete="text"
+                            placeholder="Business name"
+                            className="appearance-none rounded-lg max-sm:py-2 relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
+                          />
+                          <ErrorMessage
+                            name="companyName"
+                            component="p"
+                            className="mt-2 text-sm text-red-600 mb-3"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="Contact name"
+                            className="text-[#222529] mb-5 max-sm:text-sm"
+                          >
+                            Contact First name
+                          </label>
+                          <Field
+                            id="firstName"
+                            name="firstName"
+                            type="text"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values.firstName}
+                            autoComplete="text"
+                            placeholder="Contact First name"
+                            className="appearance-none rounded-lg max-sm:py-2 relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
+                          />
+                          <ErrorMessage
+                            name="firstName"
+                            component="p"
+                            className="mt-2 text-sm text-red-600 mb-3"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="Contact name"
+                            className="text-[#222529] mb-5 max-sm:text-sm"
+                          >
+                            Contact Last name
+                          </label>
+                          <Field
+                            id="lastName"
+                            name="lastName"
+                            type="text"
+                            value={values.lastName}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            autoComplete="text"
+                            placeholder="Contact Last name"
+                            className="appearance-none rounded-lg max-sm:py-2 relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
+                          />
+                          <ErrorMessage
+                            name="lastName"
+                            component="p"
+                            className="mt-2 text-sm text-red-600 mb-3"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="Email address"
+                            className="text-[#222529] mb-5 max-sm:text-sm"
+                          >
+                            Email address
+                          </label>
+                          <Field
+                            id="email"
+                            name="email"
+                            type="email"
+                            value={values.email}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            autoComplete="email"
+                            placeholder="Email address"
+                            className="appearance-none rounded-lg max-sm:py-2 relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
+                          />
+                          <ErrorMessage
+                            name="email"
+                            component="p"
+                            className="mt-2 text-sm text-red-600 mb-3"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="Contact number"
+                            className="text-[#222529] mb-5 max-sm:text-sm"
+                          >
+                            Contact number
+                          </label>
+                          <Field
+                            id="phone"
+                            name="phone"
+                            type="text"
+                            value={values.phone}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            autoComplete="text"
+                            placeholder="Contact number"
+                            className="appearance-none rounded-lg relative block w-full max-sm:py-2 py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
+                          />
+                          <ErrorMessage
+                            name="phone"
+                            component="p"
+                            className="mt-2 text-sm text-red-600 mb-3"
+                          />
+                        </div>
+                      </div>
 
-                  <div>
-                    <button
-                      onClick={handleNext}
-                      type="button"
-                      className="group relative w-full flex justify-center max-sm:py-2 py-3 px-4  text-sm font-medium rounded-md text-white bg-primary hover:bg-primary"
-                    >
-                      Next
-                    </button>
-                  </div>
-                </Form>
+                      <div>
+                        <button
+                          // onClick={handleNext}
+                          disabled={!isValid || !dirty}
+                          type="submit"
+                          className={`group relative w-full flex justify-center max-sm:py-2 py-3 px-4  text-sm font-medium rounded-md text-white ${
+                            !isValid || !dirty
+                              ? "bg-gray-300 cursor-not-allowed"
+                              : "bg-primary hover:bg-primary"
+                          } `}
+                        >
+                          Next
+                        </button>
+                      </div>
+                    </Form>
+                  );
+                }}
               </Formik>
             </>
           </div>
@@ -225,12 +368,19 @@ function Register() {
                 </div>
               </div>
               <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}
+                initialValues={initialValuesToCreateCard}
+                validationSchema={validationSchemaToValidateCard}
+                onSubmit={handleSubmitValidateCard}
               >
                 {(formik) => {
-                  const { isValid, dirty, values, setFieldValue } = formik;
+                  const {
+                    isValid,
+                    dirty,
+                    values,
+                    handleBlur,
+                    handleChange,
+                    setFieldValue,
+                  } = formik;
                   return (
                     <Form className="mt-4 space-y-6">
                       <div className="rounded-md shadow-sm -space-y-px">
@@ -242,18 +392,20 @@ function Register() {
                             Name of the card holder
                           </label>
                           <Field
-                            id="business_name"
-                            name="business_name"
+                            id="card_holder_name"
+                            name="card_holder_name"
                             type="text"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
                             autoComplete="text"
                             placeholder="Name of the card holder"
                             className="appearance-none max-sm:py-2 rounded-lg relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
                           />
-                          {/* <ErrorMessage
-                        name="business_name"
-                        component="p"
-                        className="mt-2 text-sm text-red-600 mb-3"
-                      /> */}
+                          <ErrorMessage
+                            name="card_holder_name"
+                            component="p"
+                            className="mt-2 text-sm text-red-600 mb-3"
+                          />
                         </div>
                         <div>
                           <label
@@ -263,25 +415,26 @@ function Register() {
                             Card number
                           </label>
                           <Field
-                            id="contact_name"
-                            name="contact_name"
+                            id="card_number"
+                            name="card_number"
                             type="text"
                             autoComplete="text"
                             placeholder="0000-0000-0000-0000"
-                            value={formatCardNumber(values.cardNumber)}
+                            value={formatCardNumber(values.card_number)}
                             onChange={(e: any) => {
                               const formattedValue = formatCardNumber(
                                 e.target.value
                               );
-                              setFieldValue("cardNumber", formattedValue);
+                              setFieldValue("card_number", formattedValue);
                             }}
+                            onBlur={handleBlur}
                             className="appearance-none max-sm:py-2 rounded-lg relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
                           />
-                          {/* <ErrorMessage
-                        name="contact_name"
-                        component="p"
-                        className="mt-2 text-sm text-red-600 mb-3"
-                      /> */}
+                          <ErrorMessage
+                            name="card_number"
+                            component="p"
+                            className="mt-2 text-sm text-red-600 mb-3"
+                          />
                         </div>
                         <div className="flex flex-row items-center justify-between">
                           <div>
@@ -292,26 +445,25 @@ function Register() {
                               Expiration date
                             </label>
                             <Field
-                              id="email"
-                              name="email"
-                              type="email"
+                              id="card_expire"
+                              name="card_expire"
+                              type="text"
+                              onBlur={handleBlur}
                               placeholder="MM/YY"
-                              value={formatExpirationDate(
-                                values.expirationDate
-                              )}
+                              value={formatExpirationDate(values.card_expire)}
                               onChange={(e: any) => {
                                 const formattedValue = formatExpirationDate(
                                   e.target.value
                                 );
-                                setFieldValue("expirationDate", formattedValue);
+                                setFieldValue("card_expire", formattedValue);
                               }}
                               className="appearance-none max-sm:py-2 rounded-lg relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
                             />
-                            {/* <ErrorMessage
-                          name="email"
-                          component="p"
-                          className="mt-2 text-sm text-red-600 mb-3"
-                        /> */}
+                            <ErrorMessage
+                              name="card_expire"
+                              component="p"
+                              className="mt-2 text-sm text-red-600 mb-3"
+                            />
                           </div>
                           <div>
                             <label
@@ -321,29 +473,35 @@ function Register() {
                               CVV
                             </label>
                             <Field
-                              id="contact_number"
-                              name="contact_number "
+                              id="cvv"
+                              name="cvv"
                               type="text"
                               maxLength={3}
+                              value={values.cvv}
                               autoComplete="text"
                               placeholder="000"
+                              onBlur={handleBlur}
+                              onChange={handleChange}
                               className="appearance-none rounded-lg  max-sm:py-2 relative block w-full py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
                             />
-                            {/* <ErrorMessage
-                          name="contact_number"
-                          component="p"
-                          className="mt-2 text-sm text-red-600 mb-3"
-                        /> */}
+                            <ErrorMessage
+                              name="cvv"
+                              component="p"
+                              className="mt-2 text-sm text-red-600 mb-3"
+                            />
                           </div>
                         </div>
                       </div>
 
                       <div>
                         <button
-                          // onClick={handleNext}
                           disabled={!isValid || !dirty}
-                          type="button"
-                          className="group relative w-full flex justify-center max-sm:py-2 py-3 px-4  text-sm font-medium rounded-md text-white bg-primary hover:bg-primary"
+                          type="submit"
+                          className={`group relative w-full flex justify-center max-sm:py-2 py-3 px-4  text-sm font-medium rounded-md text-white ${
+                            !isValid || !dirty
+                              ? "bg-gray-300 cursor-not-allowed"
+                              : "bg-primary hover:bg-primary"
+                          } cursor-pointer `}
                         >
                           Pay
                         </button>

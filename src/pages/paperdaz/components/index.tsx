@@ -6,15 +6,27 @@ import BriefDetails from "./BriefDetails";
 import Illustration from "./Illustration";
 import KeyFeatures from "./KeyFeatuers";
 import PaperdazLap from "./PaperdazLab";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import NotificationMessage from "../../../components/NotificationMessage";
 
 function PaperdazFinalLandingPageComponent() {
   const location = useLocation();
   const path = location?.state?.path;
   const home = location?.state?.home;
+  const subscriptionSuccessful = location?.state?.subscriptionSuccessful;
+
   const navigate = useNavigate();
 
+  const [showNotification, setShowNotification] = useState(false);
+
+  const handleShowNotification = () => {
+    setShowNotification(true);
+
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 5000);
+  };
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -30,6 +42,12 @@ function PaperdazFinalLandingPageComponent() {
     window.scrollTo({ top: 0, behavior: "smooth" });
     navigate(location.pathname, {});
   };
+
+  useEffect(() => {
+    if (subscriptionSuccessful && subscriptionSuccessful === true) {
+      handleShowNotification();
+    }
+  }, [subscriptionSuccessful]);
 
   useEffect(() => {
     if (path) {
@@ -56,6 +74,7 @@ function PaperdazFinalLandingPageComponent() {
       <AboutUs />
       <PaperdazLap />
       <Illustration />
+      {showNotification && <NotificationMessage />}
     </motion.div>
   );
 }

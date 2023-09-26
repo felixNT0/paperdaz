@@ -5,11 +5,9 @@ import Tabs from "../../../components/Tabs";
 import { motion } from "framer-motion";
 import Modal from "../../../components/modal";
 import NotificationModal from "../../../components/NotificationModal";
-import {
-  GetAllFaqType,
-  useGetCategoriesPaperLinkQuestions,
-} from "../../../api/services/api.service";
+import { useGetCategoriesPaperLinkQuestions } from "../../../api/services/api.service";
 import Loader from "../../../components/Loader";
+import { GetAllFaqType } from "../../../types";
 
 function FaqComponents() {
   const [activeTab, setActiveTab] = useState<number>(1);
@@ -53,6 +51,7 @@ function FaqComponents() {
         </div>
         <div className="flex flex-col gap-5 mb-10">
           {data &&
+            data[0].name === "General" &&
             data[0]?.faqs?.map(({ id, answer, question }: GetAllFaqType) => (
               <Accordion
                 key={id}
@@ -70,6 +69,7 @@ function FaqComponents() {
       </div>
       <div className="flex flex-col gap-5 mb-10">
         {data &&
+          data[1].name === "Billing" &&
           data[1]?.faqs?.map(({ id, answer, question }: GetAllFaqType) => (
             <Accordion
               key={id}

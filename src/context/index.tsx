@@ -1,4 +1,11 @@
-import React, { createContext, useContext, ReactNode, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  ReactNode,
+  useEffect,
+  useState,
+} from "react";
+import { ISubscriptionPayload } from "../types";
 
 interface AppContextType {
   isLoading: boolean;
@@ -8,6 +15,8 @@ interface AppContextType {
   toggleChatBox: (state: boolean) => void;
   toggleRegisterModal: () => void;
   toggleLoginModal: () => void;
+  tableSubscriptionPayload: any;
+  updateTableSubmitScriptionPayload: (data: ISubscriptionPayload) => void;
 }
 
 const AppContext = createContext<AppContextType>({
@@ -18,6 +27,8 @@ const AppContext = createContext<AppContextType>({
   toggleChatBox: () => {},
   toggleRegisterModal: () => {},
   toggleLoginModal: () => {},
+  tableSubscriptionPayload: {},
+  updateTableSubmitScriptionPayload: () => {},
 });
 
 export function AppContextProvider({ children }: { children: ReactNode }) {
@@ -27,6 +38,10 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     React.useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] =
     React.useState<boolean>(false);
+  const [tableSubscriptionPayload, setTableSubscriptionPayload] = useState();
+
+  const updateTableSubmitScriptionPayload = (values: any) =>
+    setTableSubscriptionPayload(values);
 
   const toggleChatBox = (state: boolean) => setIsChatBoxOpen(state);
   const toggleRegisterModal = () =>
@@ -49,6 +64,8 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
         isRegisterModalOpen,
         toggleRegisterModal,
         toggleLoginModal,
+        tableSubscriptionPayload,
+        updateTableSubmitScriptionPayload,
       }}
     >
       {children}

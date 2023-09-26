@@ -16,9 +16,10 @@ const PaperdazProductsTable = ({
   const { toggleRegisterModal } = useAppContext();
 
   const [isSwitched, setIsSwitched] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
-  // const [done, setDone] = useState<boolean>(false);
-  // const [newUrl, setNewUrl] = useState<string>("");
+  const { isRegisterModalOpen, updateTableSubmitScriptionPayload } =
+    useAppContext();
 
   const [items, setItems] = useState([
     { feature: "Team Member", price: 2, quantity: 1 },
@@ -35,14 +36,7 @@ const PaperdazProductsTable = ({
       price: 1,
       quantity: 0,
       isChecked: false,
-      icon: (
-        <input
-          // checked={isChecked}
-          // onChange={handleCheckboxChange}
-          type="checkbox"
-          className="form-checkbox cursor-pointer outline-none h-4 w-4 rounded border-primary text-primary focus:ring-primary form-checkbox"
-        />
-      ),
+      icon: true,
     },
   ]);
 
@@ -54,7 +48,6 @@ const PaperdazProductsTable = ({
     const updatedItems = [...items];
     updatedItems[index].quantity++;
     setItems(updatedItems);
-    updateURLParams(updatedItems);
   };
 
   const decrementQuantity = (index: number) => {
@@ -62,66 +55,38 @@ const PaperdazProductsTable = ({
     if (updatedItems[index].quantity > 0) {
       updatedItems[index].quantity--;
       setItems(updatedItems);
-      updateURLParams(updatedItems);
     }
   };
 
-  const params: { [key: string]: string | number | boolean } = {
-    business_page: true,
-    team_member: 1,
-    paperlink_page: 1,
-    fillable_pdf: 0,
-    white_glove_service: false,
-    monthly_plan: isSwitched ? true : false,
-  };
-
-  if (isSwitched) {
-    params.monthly_plan = true;
-  } else {
-    params.monthly_plan = false;
-  }
-
-  const updateURLParams = (updatedItems?: any[]) => {
-    updatedItems?.forEach((item) => {
-      if (item.feature === "Business Page") {
-        params.business_page = true;
-      }
-      if (item.feature === "Team Member") {
-        params.team_member = item.quantity;
-      }
-      if (item.feature === "Paperlink Page") {
-        params.paperlink_page = item.quantity;
-      }
-      if (item.feature === "Fillable PDF") {
-        params.fillable_pdf = item.quantity;
-      }
-      if (item.feature === "White Glove Service") {
-        params.white_glove_service = true;
-      }
-    });
-
-    // const queryString = Object.keys(params)
-    //   .filter((key) => params[key] !== undefined)
-    //   .map((key) => `${key}=${encodeURIComponent(params[key])}`)
-    // .join("&");
-
-    // const url = `https://dev.paperlink.app/package?tablevel=1&${queryString}`;
-    // setNewUrl(url);
-  };
-
   const getTotalAmount = () => {
-    return items.reduce((total, item) => total + item.price * item.quantity, 0);
+    const total = items.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+    const sum = total + 10;
+    if (isSwitched) return sum * 0.2;
+    return sum;
   };
 
-  // useEffect(() => {
-  //   if (done) {
-  //     window.location.href = newUrl;
-  //   }
-  // }, [done]);
+  const payload = {
+    action: "subscribe",
+    plan: isSwitched ? "yearly" : "monthly",
+    companyLedger: true,
+    packageName: "Custom",
+    paperlink: items[1].quantity,
+    publicProfile: true,
+    teamMembers: items[0].quantity,
+    cc: 1,
+    isWhiteGloveService: isChecked,
+    userId: null,
+    fillablePdf: items[2].quantity,
+  };
 
   useEffect(() => {
-    updateURLParams();
-  }, []);
+    if (isRegisterModalOpen) {
+      updateTableSubmitScriptionPayload(payload);
+    }
+  }, [isRegisterModalOpen, items]);
 
   return (
     <div id="register">
@@ -141,107 +106,127 @@ const PaperdazProductsTable = ({
               className="mt-5 w-1/2 max-lg:w-full max-sm:w-full max-lg:overflow-x-scroll p-3 rounded-[20px] bg-white"
               style={{ border: "3px solid #5FA348" }}
             >
-              <table className="w-full border-collapse overflow-x-auto">
-                <thead className="bg-white p-5">
-                  <tr className="bg-white p-5">
-                    <th className="p-2 pt-5">
-                      <div className="flex gap-5 max-sm:gap-3 items-center justify-start">
-                        <span className="border-b-2 border-green-500 pb-0.5">
-                          Feature
-                        </span>
-                        <img
-                          onClick={toggleOpenModal}
-                          src={productMenuIcon}
-                          alt="productMenuIcon"
-                          className="cursor-pointer w-7 max-sm:w-4 text-primary"
-                        />
-                      </div>
-                    </th>
-                    <th className="p-2 pt-5">
-                      <span className="border-b-2 border-green-500 pb-0.5">
-                        Price/unit
-                      </span>
-                    </th>
-                    <th className="p-2 pt-5">
-                      <span className="border-b-2 border-green-500 pb-0.5">
-                        Quantity
-                      </span>
-                    </th>
-                    <th className="p-2 pt-5">
-                      <span className="border-b-2 border-green-500 pb-0.5">
-                        Amount
-                      </span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white max-sm:text-sm">
-                  <tr className="pt-10 max-sm:text-sm">
-                    <td className="p-2 py-7 max-sm:text-sm">Business Page</td>
-                    <td className="p-2 py-7 text-center ">
-                      <div className="flex justify-center items-center">
-                        <img
-                          src={productCheckIcon}
-                          alt="productCheckIcon"
-                          className="w-4"
-                        />
-                      </div>
-                    </td>
-                    <td className="p-2 py-7 text-center">
-                      <div className="flex justify-center items-center">
-                        <img
-                          src={productCheckIcon}
-                          alt="productCheckIcon"
-                          className="w-4"
-                        />
-                      </div>
-                    </td>
-                    <td className="p-2 py-7 text-center">$10.00</td>
-                  </tr>
-                  {items.map((item, index) => (
-                    <tr key={index} className="border-t max-sm:text-sm">
-                      <td className="p-3">
-                        {item.icon ? (
-                          <div className="flex flex-row gap-1 items-center">
-                            {item.icon}
-                            {item.feature}
-                          </div>
-                        ) : (
-                          <>{item.feature}</>
-                        )}
-
-                        <span className="text-sm text-[#707070]">
-                          {item.otherFeature}
-                        </span>
-                      </td>
-                      <td className="p-3 text-center">
-                        ${item.price.toFixed(2)}
-                      </td>
-                      <td className="p-5 lg:flex lg:justify-center">
-                        <div className="bg-[#EFEFEF] text-center rounded-lg lg:max-w-[100px] flex flex-row  justify-center items-center p-0.5 max-sm:p-0.5">
-                          <button
-                            className="p-0.5 px-3.5 rounded-md max-sm:width "
-                            onClick={() => decrementQuantity(index)}
-                          >
-                            -
-                          </button>
-                          <span className="p-0.5 px-3.5 rounded-lg bg-white">
-                            {item.quantity}
+              <div className="flex items-center justify-center">
+                <table className="w-full border-collapse overflow-x-auto">
+                  <thead className="bg-white p-5">
+                    <tr className="bg-white p-5">
+                      <th className="p-2 pt-5">
+                        <div className="flex gap-5 max-sm:gap-3 items-center justify-start">
+                          <span className="border-b-2 border-green-500 pb-0.5">
+                            Feature
                           </span>
-                          <button
-                            className="p-0.5 px-3.5 rounded-md "
-                            onClick={() => incrementQuantity(index)}
-                          >
-                            +
-                          </button>
+                          <img
+                            onClick={toggleOpenModal}
+                            src={productMenuIcon}
+                            alt="productMenuIcon"
+                            className="cursor-pointer w-7 max-sm:w-4 text-primary bg-[#FFDE17]"
+                          />
+                        </div>
+                      </th>
+                      <th className="p-2 pt-5">
+                        <span className="border-b-2 border-green-500 pb-0.5">
+                          Price/unit
+                        </span>
+                      </th>
+                      <th className="p-2 pt-5">
+                        <span className="border-b-2 border-green-500 pb-0.5">
+                          Quantity
+                        </span>
+                      </th>
+                      <th className="p-2 pt-5">
+                        <span className="border-b-2 border-green-500 pb-0.5">
+                          Amount
+                        </span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white max-sm:text-sm">
+                    <tr className="pt-10 max-sm:text-sm">
+                      <td className="p-2 py-7 max-sm:text-sm">Business Page</td>
+                      <td className="p-2 py-7 text-center ">
+                        <div className="flex justify-center items-center">
+                          <img
+                            src={productCheckIcon}
+                            alt="productCheckIcon"
+                            className="w-4"
+                          />
                         </div>
                       </td>
-                      <td className="pl-5 text-center">
-                        ${(item.price * item.quantity).toFixed(2)}
+                      <td className="p-2 py-7 text-center">
+                        <div className="flex justify-center items-center">
+                          <img
+                            src={productCheckIcon}
+                            alt="productCheckIcon"
+                            className="w-4"
+                          />
+                        </div>
                       </td>
+                      <td className="p-2 py-7 text-center">$10.00</td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                    {items.map((item, index) => (
+                      <tr key={index} className="border-t max-sm:text-sm">
+                        <td className="p-3 flex gap-1 items-center">
+                          {item.icon ? (
+                            <div className="flex flex-row gap-1 items-center">
+                              <input
+                                checked={isChecked}
+                                onChange={() => setIsChecked(!isChecked)}
+                                type="checkbox"
+                                className="form-checkbox cursor-pointer outline-none h-4 w-4 rounded border-primary text-primary focus:ring-primary form-checkbox"
+                              />
+                              {item.feature}
+                            </div>
+                          ) : (
+                            <>{item.feature}</>
+                          )}
+
+                          <span className="text-[0.5rem] text-[#707070]">
+                            {item.otherFeature}
+                          </span>
+                        </td>
+                        <td className="p-3 text-center">
+                          ${item.price.toFixed(2)}
+                        </td>
+                        <td className="p-5 lg:flex lg:justify-center">
+                          <div className="bg-[#EFEFEF] text-center rounded-lg lg:max-w-[100px] flex flex-row  justify-center items-center p-0.5 max-sm:p-0.5">
+                            <button
+                              className="p-0.5 px-3.5 rounded-md max-sm:width "
+                              onClick={() => {
+                                if (item.feature !== "White Glove Service")
+                                  decrementQuantity(index);
+                              }}
+                            >
+                              {item.feature !== "White Glove Service"
+                                ? "-"
+                                : ""}
+                            </button>
+                            <span className="p-0.5 px-3.5 rounded-lg bg-white">
+                              {item.feature === "White Glove Service" &&
+                              isChecked
+                                ? `${items[1].quantity}`
+                                : `${item.quantity}`}
+                            </span>
+                            <button
+                              className="p-0.5 px-3.5 rounded-md "
+                              onClick={() => {
+                                if (item.feature !== "White Glove Service")
+                                  incrementQuantity(index);
+                              }}
+                            >
+                              {item.feature !== "White Glove Service"
+                                ? "+"
+                                : ""}
+                            </button>
+                          </div>
+                        </td>
+                        <td className="pl-5 text-center">
+                          ${(item.price * item.quantity).toFixed(2)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
               <div className="flex items-center justify-between border-t border-[#5FA348] ">
                 <h3 className="py-7 max-sm:py-3 pl-3 font-bold max-sm:pl-20">
                   {!isSwitched ? "Monthly" : "Yearly"} Amount:
@@ -290,107 +275,122 @@ const PaperdazProductsTable = ({
             onClick={toggleOpenModal}
             src={productMenuIcon}
             alt="productMenuIcon"
-            className="cursor-pointer w-10 max-sm:w-[1.5rem] text-primary"
+            className="cursor-pointer w-10 max-sm:w-[1.5rem] text-primary bg-[#FFDE17]"
           />
         </div>
-        <table className=" border-collapse max-xsm:text-[0.5rem] bg-white rounded-t-5xl                                                     ">
-          <thead className="bg-white ">
-            <tr className="bg-white  max-sm:p-0 p-5">
-              <th className="p-2 text-start pt-5">
-                <span className="border-b-2 max-sm:text-[0.7rem] max-xsm:text-[0.55rem] border-green-500 pb-0.5">
-                  Feature
-                </span>
-              </th>
-              <th className="p-2 pt-5">
-                <span className="border-b-2 max-sm:text-[0.7rem] max-xsm:text-[0.55rem] border-green-500 pb-0.5">
-                  Price/unit
-                </span>
-              </th>
-              <th className="p-2 pt-5">
-                <span className="border-b-2 max-sm:text-[0.7rem] max-xsm:text-[0.55rem] border-green-500 pb-0.5">
-                  Quantity
-                </span>
-              </th>
-              <th className="p-2  pt-5">
-                <span className="border-b-2 max-sm:text-[0.7rem] max-xsm:text-[0.55rem] border-green-500 pb-0.5">
-                  Amount
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white max-sm:text-[0.7rem] max-xsm:text-[0.5rem]">
-            <tr className="pt-10 max-sm:text-[0.7rem] max-xsm:text-[0.5rem]">
-              <td className="p-2 py-7 max-sm:text-[0.7rem] max-xsm:text-[0.5rem]">
-                Business Page
-              </td>
-              <td className="p-2 py-7  text-center ">
-                <div className="flex justify-center items-center">
-                  <img
-                    src={productCheckIcon}
-                    alt="productCheckIcon"
-                    className="w-4 max-xsm:w-3"
-                  />
-                </div>
-              </td>
-              <td className="p-2 py-7 text-center">
-                <div className="flex justify-center items-center">
-                  <img
-                    src={productCheckIcon}
-                    alt="productCheckIcon"
-                    className="w-4 max-xsm:w-3"
-                  />
-                </div>
-              </td>
-              <td className="p-2 py-7 text-center max-sm:text-[0.7rem] max-xsm:text-[0.5rem]">
-                $10.00
-              </td>
-            </tr>
-            {items.map((item, index) => (
-              <tr
-                key={index}
-                className="border-t max-sm:text-[0.7rem] max-xsm:text-[0.5rem]"
-              >
-                <td className="p-3 flex flex-col gap-1">
-                  {item.icon ? (
-                    <div className="flex flex-row max-xsm:flex-col gap-1 items-center">
-                      {item.icon}
-                      {item.feature}
-                    </div>
-                  ) : (
-                    <>{item.feature}</>
-                  )}
-
-                  <span className="max-sm:text-[0.5rem] max-xsm:text-[0.4rem] text-[#707070]">
-                    {item.otherFeature}
+        <div className="flex items-center justify-center">
+          <table className=" border-collapse max-xsm:text-[0.5rem] bg-white rounded-t-5xl                                                     ">
+            <thead className="bg-white ">
+              <tr className="bg-white  max-sm:p-0 p-5">
+                <th className="p-2 text-start pt-5">
+                  <span className="border-b-2 max-sm:text-[0.7rem] max-xsm:text-[0.55rem] border-green-500 pb-0.5">
+                    Feature
                   </span>
+                </th>
+                <th className="p-2 pt-5">
+                  <span className="border-b-2 max-sm:text-[0.7rem] max-xsm:text-[0.55rem] border-green-500 pb-0.5">
+                    Price/unit
+                  </span>
+                </th>
+                <th className="p-2 pt-5">
+                  <span className="border-b-2 max-sm:text-[0.7rem] max-xsm:text-[0.55rem] border-green-500 pb-0.5">
+                    Quantity
+                  </span>
+                </th>
+                <th className="p-2  pt-5">
+                  <span className="border-b-2 max-sm:text-[0.7rem] max-xsm:text-[0.55rem] border-green-500 pb-0.5">
+                    Amount
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white max-sm:text-[0.7rem] max-xsm:text-[0.5rem]">
+              <tr className="pt-10 max-sm:text-[0.7rem] max-xsm:text-[0.5rem]">
+                <td className="p-2 py-7 max-sm:text-[0.7rem] max-xsm:text-[0.5rem]">
+                  Business Page
                 </td>
-                <td className="p-3 text-center">${item.price.toFixed(2)}</td>
-                <td className="p-5 lg:flex lg:justify-center">
-                  <div className="bg-[#EFEFEF] text-center rounded-lg lg:max-w-[100px] flex flex-row  justify-center items-center p-0.5 max-sm:p-0.5">
-                    <button
-                      className="p-0.5 px-3.5 rounded-md max-sm:px-1 "
-                      onClick={() => decrementQuantity(index)}
-                    >
-                      -
-                    </button>
-                    <span className="p-0.5 px-3.5 max-sm:px-2 rounded-lg bg-white">
-                      {item.quantity}
-                    </span>
-                    <button
-                      className="p-0.5 px-3.5 max-sm:px-1 rounded-md "
-                      onClick={() => incrementQuantity(index)}
-                    >
-                      +
-                    </button>
+                <td className="p-2 py-7  text-center ">
+                  <div className="flex justify-center items-center">
+                    <img
+                      src={productCheckIcon}
+                      alt="productCheckIcon"
+                      className="w-4 max-xsm:w-3 "
+                    />
                   </div>
                 </td>
-                <td className="pl-5 text-center max-sm:px-1">
-                  ${(item.price * item.quantity).toFixed(2)}
+                <td className="p-2 py-7 text-center">
+                  <div className="flex justify-center items-center">
+                    <img
+                      src={productCheckIcon}
+                      alt="productCheckIcon"
+                      className="w-4 max-xsm:w-3"
+                    />
+                  </div>
+                </td>
+                <td className="p-2 py-7 text-center max-sm:text-[0.7rem] max-xsm:text-[0.5rem]">
+                  $10.00
                 </td>
               </tr>
-            ))}
-          </tbody>
-        </table>
+              {items.map((item, index) => (
+                <tr
+                  key={index}
+                  className="border-t max-sm:text-[0.7rem] max-xsm:text-[0.5rem]"
+                >
+                  <td className="p-3 flex flex-col gap-1">
+                    {item.icon ? (
+                      <div className="flex flex-row gap-1 items-center">
+                        <input
+                          checked={isChecked}
+                          onChange={() => setIsChecked(!isChecked)}
+                          type="checkbox"
+                          className="form-checkbox cursor-pointer outline-none h-4 w-4 rounded border-primary text-primary focus:ring-primary form-checkbox"
+                        />
+                        {item.feature}
+                      </div>
+                    ) : (
+                      <>{item.feature}</>
+                    )}
+
+                    <span className="max-sm:text-[0.5rem] max-xsm:text-[0.4rem] text-[#707070]">
+                      {item.otherFeature}
+                    </span>
+                  </td>
+                  <td className="p-3 text-center">${item.price.toFixed(2)}</td>
+                  <td className="p-5 lg:flex lg:justify-center">
+                    <div className="bg-[#EFEFEF] text-center rounded-lg lg:max-w-[100px] flex flex-row  justify-center items-center p-0.5 max-sm:p-0.5">
+                      <button
+                        className="p-0.5 px-3.5 rounded-md max-sm:px-1 "
+                        onClick={() => {
+                          if (item.feature !== "White Glove Service")
+                            decrementQuantity(index);
+                        }}
+                      >
+                        {item.feature !== "White Glove Service" ? "-" : ""}
+                      </button>
+                      <span className="p-0.5 px-3.5 max-sm:px-2 rounded-lg bg-white">
+                        {item.feature === "White Glove Service" && isChecked
+                          ? `${items[1].quantity}`
+                          : `${item.quantity}`}
+                      </span>
+                      <button
+                        className="p-0.5 px-3.5 max-sm:px-1 rounded-md "
+                        onClick={() => {
+                          if (item.feature !== "White Glove Service")
+                            incrementQuantity(index);
+                        }}
+                      >
+                        {item.feature !== "White Glove Service" ? "+" : ""}
+                      </button>
+                    </div>
+                  </td>
+                  <td className="pl-5 text-center max-sm:px-1">
+                    ${(item.price * item.quantity).toFixed(2)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <div className="flex flex-col items-center justify-center border-t border-[#5FA348] max-sm:text-[0.5rem]">
           <div className="flex py-7 max-sm:pb-0 max-sm:text-[0.5rem] pb-30 max-sm:gap-3 gap-5 items-center ">
             <p>Monthly</p>{" "}
