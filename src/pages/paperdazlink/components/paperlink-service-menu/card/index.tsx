@@ -28,7 +28,7 @@ function Card({
   return (
     <div
       style={style}
-      className={`relative rounded-lg border ${cardColor} border-2 p-3 m-3 max-xsm:w-[250px] w-[450px] h-[220px] flex flex-col justify-around max-md:h-auto max-xsm:mt-5`}
+      className={`relative rounded-lg border ${cardColor} border-2 p-3 m-3 max-xsm:w-[250px] max-sm:w-[300px] w-[450px] h-[220px] flex flex-col justify-around max-md:h-auto max-xsm:mt-5`}
     >
       <div
         className={`absolute -left-[0.45rem] top-16 max-md:top-16 bottom-0 w-3 h-20 max-sm:top-10 ${bgColor} rounded-lg`}
@@ -38,7 +38,7 @@ function Card({
           {title}
         </h1>
         <h1
-          className={`text-xl max-md:text-lg max-sm:text-[0.7rem] font-bold ${textColor}`}
+          className={`text-5xl max-md:text-3xl max-sm:text-lg font-bold ${textColor}`}
         >
           {number}
         </h1>

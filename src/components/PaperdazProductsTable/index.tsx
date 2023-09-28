@@ -40,13 +40,10 @@ const PaperdazProductsTable = ({
     },
   ]);
 
-  const toggleSwitch = () => {
-    setIsSwitched(!isSwitched);
-  };
-
   const incrementQuantity = (index: number) => {
     const updatedItems = [...items];
     updatedItems[index].quantity++;
+
     setItems(updatedItems);
   };
 
@@ -54,8 +51,31 @@ const PaperdazProductsTable = ({
     const updatedItems = [...items];
     if (updatedItems[index].quantity > 0) {
       updatedItems[index].quantity--;
+      if (
+        updatedItems[index].feature === "Team Member" ||
+        updatedItems[index].feature === "Paperlink Page"
+      ) {
+        updatedItems[index].quantity = 1; // Prevent going below 1
+      }
       setItems(updatedItems);
     }
+  };
+
+  const toggleSwitch = () => {
+    setIsSwitched(!isSwitched);
+  };
+  const toggleCheck = (index: number) => {
+    const updatedItems = [...items];
+
+    if (!isChecked) {
+      updatedItems[index].quantity = items[1].quantity;
+    } else {
+      updatedItems[index].quantity = 0;
+    }
+
+    setIsChecked(!isChecked);
+
+    setItems(updatedItems);
   };
 
   const getTotalAmount = () => {
@@ -64,7 +84,8 @@ const PaperdazProductsTable = ({
       0
     );
     const sum = total + 10;
-    if (isSwitched) return sum * 0.2;
+    const percentageTotal = sum * 0.2;
+    if (isSwitched) return sum - percentageTotal;
     return sum;
   };
 
@@ -142,8 +163,10 @@ const PaperdazProductsTable = ({
                   </thead>
                   <tbody className="bg-white max-sm:text-sm">
                     <tr className="pt-10 max-sm:text-sm">
-                      <td className="p-2 py-7 max-sm:text-sm">Business Page</td>
-                      <td className="p-2 py-7 text-center ">
+                      <td className="p-2 py-7 max-sm:text-sm items-center">
+                        Business Page
+                      </td>
+                      <td className="p-2 py-7 text-center items-center ">
                         <div className="flex justify-center items-center">
                           <img
                             src={productCheckIcon}
@@ -152,7 +175,7 @@ const PaperdazProductsTable = ({
                           />
                         </div>
                       </td>
-                      <td className="p-2 py-7 text-center">
+                      <td className="p-2 py-7 text-center items-center">
                         <div className="flex justify-center items-center">
                           <img
                             src={productCheckIcon}
@@ -161,7 +184,9 @@ const PaperdazProductsTable = ({
                           />
                         </div>
                       </td>
-                      <td className="p-2 py-7 text-center">$10.00</td>
+                      <td className="p-2 pl-5 py-7 text-center items-center">
+                        $10.00
+                      </td>
                     </tr>
                     {items.map((item, index) => (
                       <tr key={index} className="border-t max-sm:text-sm">
@@ -170,7 +195,7 @@ const PaperdazProductsTable = ({
                             <div className="flex flex-row gap-1 items-center">
                               <input
                                 checked={isChecked}
-                                onChange={() => setIsChecked(!isChecked)}
+                                onChange={() => toggleCheck(index)}
                                 type="checkbox"
                                 className="form-checkbox cursor-pointer outline-none h-4 w-4 rounded border-primary text-primary focus:ring-primary form-checkbox"
                               />
@@ -201,10 +226,7 @@ const PaperdazProductsTable = ({
                                 : ""}
                             </button>
                             <span className="p-0.5 px-3.5 rounded-lg bg-white">
-                              {item.feature === "White Glove Service" &&
-                              isChecked
-                                ? `${items[1].quantity}`
-                                : `${item.quantity}`}
+                              {`${item.quantity} `}
                             </span>
                             <button
                               className="p-0.5 px-3.5 rounded-md "
@@ -306,7 +328,7 @@ const PaperdazProductsTable = ({
             </thead>
             <tbody className="bg-white max-sm:text-[0.7rem] max-xsm:text-[0.5rem]">
               <tr className="pt-10 max-sm:text-[0.7rem] max-xsm:text-[0.5rem]">
-                <td className="p-2 py-7 max-sm:text-[0.7rem] max-xsm:text-[0.5rem]">
+                <td className="p-2  items-center pl-3.5 py-7 max-sm:text-[0.7rem] max-xsm:text-[0.5rem]">
                   Business Page
                 </td>
                 <td className="p-2 py-7  text-center ">
@@ -341,7 +363,7 @@ const PaperdazProductsTable = ({
                       <div className="flex flex-row gap-1 items-center">
                         <input
                           checked={isChecked}
-                          onChange={() => setIsChecked(!isChecked)}
+                          onChange={() => toggleCheck(index)}
                           type="checkbox"
                           className="form-checkbox cursor-pointer outline-none h-4 w-4 rounded border-primary text-primary focus:ring-primary form-checkbox"
                         />
@@ -368,9 +390,7 @@ const PaperdazProductsTable = ({
                         {item.feature !== "White Glove Service" ? "-" : ""}
                       </button>
                       <span className="p-0.5 px-3.5 max-sm:px-2 rounded-lg bg-white">
-                        {item.feature === "White Glove Service" && isChecked
-                          ? `${items[1].quantity}`
-                          : `${item.quantity}`}
+                        {`${item.quantity}`}
                       </span>
                       <button
                         className="p-0.5 px-3.5 max-sm:px-1 rounded-md "
