@@ -8,10 +8,10 @@ interface Props {
 
 function Tabs({ activeTab, handleTabClick }: Props) {
   const tabItem: TabType[] = [
-    { id: 1, tabTitle: "Paperlink" },
-    { id: 2, tabTitle: "Signinlink" },
-    { id: 3, tabTitle: "Timelink" },
-    { id: 4, tabTitle: "Hostlink" },
+    { id: 1, tabTitle: "PaperLink" },
+    { id: 2, tabTitle: "SigninLink" },
+    { id: 3, tabTitle: "TimeLink" },
+    { id: 4, tabTitle: "HostLink" },
   ];
 
   const tabVariants = {

@@ -105,7 +105,7 @@ function Footer() {
                 }
                 className="mb-2 hover:underline cursor-pointer "
               >
-                Paperlink
+                PaperLink
               </p>
               <p
                 onClick={() =>
@@ -115,7 +115,7 @@ function Footer() {
                 }
                 className="mb-2 hover:underline cursor-pointer "
               >
-                Signinlink
+                SigninLink
               </p>
               <p
                 onClick={() =>
@@ -125,7 +125,7 @@ function Footer() {
                 }
                 className="mb-2 hover:underline cursor-pointer "
               >
-                Timelink
+                TimeLink
               </p>
               <p
                 onClick={() =>
@@ -135,7 +135,7 @@ function Footer() {
                 }
                 className="mb-2 hover:underline cursor-pointer "
               >
-                Hostlink
+                HostLink
               </p>
               <p
                 onClick={() =>
@@ -145,7 +145,7 @@ function Footer() {
                 }
                 className="mb-2 hover:underline cursor-pointer "
               >
-                Rxlink
+                RxLink
               </p>
             </div>
           </div>
