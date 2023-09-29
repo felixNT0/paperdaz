@@ -28,15 +28,15 @@ function Footer() {
 
   return (
     <footer className="bg-black text-gray-300">
-      <div className="container max-md:text-center mx-auto py-8 px-4 md:px-8 lg:px-10 xl:px-15">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 ">
+      <div className="container max-md:text-center mx-auto py-8 px-4 md:px-8 lg:px-5 xl:px-7">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 max-sm:gap-3 item-center">
           <div className="mb-8 lg:mr-[100px] ">
             <div className="flex flex-col item-center justify-center text-center">
-              <div className="flex item-center justify-center text-center">
+              <div className="flex item-center justify-center text-center ">
                 <img
                   src={footerLogo}
                   alt="logo"
-                  className="w-[120px] md:w-[200px] cursor-pointer"
+                  className="w-[120px] md:w-[200px] cursor-pointer "
                   onClick={() =>
                     navigate(navigations.LANDING_PAGE, {
                       state: { home: "home" },
@@ -48,7 +48,7 @@ function Footer() {
             </div>
           </div>
           <div className="mb-8">
-            <h2 className="text-2xl max-sm:text-xl font-semibold mb-4 underline">
+            <h2 className="text-2xl max-xl:text-lg font-semibold mb-4 underline">
               Company
             </h2>
             <div className="max-sm:text-lg">
@@ -93,7 +93,7 @@ function Footer() {
             </div>
           </div>
           <div className="mb-8">
-            <h2 className="text-2xl max-sm:text-xl  font-semibold mb-4 underline">
+            <h2 className="text-2xl max-xl:text-lg font-semibold mb-4 underline">
               Products
             </h2>
             <div className="max-sm:text-lg">
@@ -150,7 +150,7 @@ function Footer() {
             </div>
           </div>
           <div className="mb-8">
-            <h2 className="text-2xl max-sm:text-xl  font-semibold mb-4 underline">
+            <h2 className="text-2xl max-xl:text-lg  font-semibold mb-4 underline">
               Support
             </h2>
             <div className="max-sm:text-lg">
@@ -173,7 +173,7 @@ function Footer() {
             </div>
           </div>
           <div className="mb-8">
-            <h2 className="text-2xl max-sm:text-xl  font-semibold mb-4 underline">
+            <h2 className="text-2xl  max-xl:text-lg  font-semibold mb-4 underline">
               Get Latest Updates
             </h2>
             <div className="flex mb-2 item-center justify-start max-md:justify-center">

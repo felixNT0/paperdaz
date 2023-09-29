@@ -12,7 +12,7 @@ function PaperLinkServiceMenu() {
       icon: serviceIcon,
       title: "Business Page",
       description:
-        "PaperLink Business Page is included with every account, and displays all PaperLink files.",
+        "PWA Business Page is included with every account, and displays all PaperLink files.",
       number: "1",
       charges: "Monthly charge",
       price: "$10",
@@ -21,7 +21,8 @@ function PaperLinkServiceMenu() {
     {
       icon: teamMemberIcon,
       title: "Team Member",
-      description: "Each member can manage files on PaperLink.",
+      description:
+        "Each team member has access to manage files on File Manager.",
       number: "2",
       charges: "Monthly charge",
       price: "$2",
@@ -32,7 +33,7 @@ function PaperLinkServiceMenu() {
       icon: paperLinkIcon,
       title: "Paperlink",
       description:
-        "Turn paper into Paperlink in minutes by uploading a file for users to complete, sign, or confirm.",
+        "Turn paper into a PaperLink in minutes, simply upload a file for users to complete, sign, or confirm.",
       number: "3",
       charges: "Monthly charge",
       price: "$2",
@@ -53,7 +54,7 @@ function PaperLinkServiceMenu() {
       icon: whiteIcon,
       title: "White Glove Service",
       description:
-        "Email us your forms and we will take care of the rest!  We will upload your forms under the best action, and place all necessary stickers for each file for your office and clients.",
+        "Provide us all of your forms and we will take care of the rest! We will select the best action, and place all necessary stickers for each file. Our team will have all of your PaperLinks ready to go! ",
       number: "5",
       charges: "One Time Charge",
       price: "$1",
@@ -99,7 +100,7 @@ function PaperLinkServiceMenu() {
             style={
               index === serviceMenu.length - 1
                 ? { gridColumn: "span 2", margin: "auto" }
-               : {}
+                : {}
             }
           />
         ))}

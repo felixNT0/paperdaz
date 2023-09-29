@@ -54,7 +54,7 @@ function Card({
           <p className={`text-[0.8rem] ${textColor}`}>{charges}</p>
         </div>
         <div className="flex gap-1 items-center">
-          <h1 className="text-xl max-md:text-lg max-sm:text-[0.7rem] font-bold">
+          <h1 className="text-2xl max-md:text-lg max-sm:text-[0.7rem] font-bold">
             {price}
           </h1>
           <p className="max-md:text-md max-sm:text-sm">{type}</p>
