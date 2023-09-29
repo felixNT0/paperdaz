@@ -47,7 +47,7 @@ function ModalContents() {
           </div>
           <div>
             <h3 className="text-[#243853] font-extrabold max-xsm:text-sm ">
-              E-mail Address
+              Email Address
             </h3>
             <p className="text-[#6A6A6D] text-sm max-xsm:text-[0.7rem] ">
               hello@paperdaz.com

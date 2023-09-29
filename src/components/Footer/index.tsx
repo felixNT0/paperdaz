@@ -115,7 +115,7 @@ function Footer() {
                 }
                 className="mb-2 hover:underline cursor-pointer "
               >
-                Sgininlink
+                Signinlink
               </p>
               <p
                 onClick={() =>

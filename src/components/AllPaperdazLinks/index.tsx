@@ -5,11 +5,11 @@ import navigations from "../../navigations";
 function AllPaperdazLinks() {
   const navigate = useNavigate();
   const links = [
-    { name: "Paperlink" },
-    { name: "Signinlink" },
-    { name: "Timelink" },
-    { name: "Hostlink" },
-    { name: "Rxlink" },
+    { name: "PaperLink" },
+    { name: "SigninLink" },
+    { name: "TimeLink" },
+    { name: "HostLink" },
+    { name: "RxLink" },
   ];
   return (
     <div className="lg:relative bg-[#77C360] w-full max-sm:h-[70px] h-[120px] flex flex-row justify-center lg:gap-0  max-md:gap-3 max-[350px]:gap-1 max-sm:gap-3 items-center overflow-x-auto overflow-hidden ">
@@ -25,7 +25,7 @@ function AllPaperdazLinks() {
         >
           <p
             onClick={() => {
-              if (name === "Paperlink") {
+              if (name === "PaperLink") {
                 navigate(navigations.PAPER_LINK, {
                   state: { path: "paperdaz-link" },
                 });
