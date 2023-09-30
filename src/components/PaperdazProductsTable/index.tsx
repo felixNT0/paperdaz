@@ -124,7 +124,7 @@ const PaperdazProductsTable = ({
           <p className="text-center">Pay annually and get a 20% discount </p>
           <div className="flex items-center justify-center">
             <div
-              className="mt-5 w-1/2 max-lg:w-full max-sm:w-full max-lg:overflow-x-scroll p-3 rounded-[20px] bg-white"
+              className="mt-5 xl:w-1/2 lg:w-[70%] max-lg:w-full max-sm:w-full max-lg:overflow-x-scroll p-3 rounded-[20px] bg-white"
               style={{ border: "3px solid #5FA348" }}
             >
               <div className="flex items-center justify-center">

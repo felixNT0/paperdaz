@@ -25,6 +25,8 @@ export type ILoginPayload = {
 
 export type ILoginSuccessResponse = {
   accessToken: string;
+  user: { id: string };
+  
 };
 
 export type IValidateCardPayload = {

@@ -9,14 +9,14 @@ import {
   ISubscriptionPayload,
   IValidateCardPayload,
 } from "../../types";
-import { ApiAxiosInstance, DevApiAxiosInstance } from "../../api";
+import { DevApiAxiosInstance } from "../../api";
 
 const GET_ALL_FAQ_DATA = "GET_ALL_FAQ_DATA";
 const GET_ALL_CATEGORIES_PAPERLINK_QUESTIONS =
   "GET_ALL_CATEGORIES_PAPERLINK_QUESTIONS";
 
 const getAllFAQ = async (): Promise<GetAllFaqType[]> => {
-  const response = await ApiAxiosInstance.get<GetAllFaqType[]>(`/faq`);
+  const response = await DevApiAxiosInstance.get<GetAllFaqType[]>(`/faq`);
   return response.data;
 };
 
@@ -27,7 +27,7 @@ export const useGetAllFaqQuery = () => {
 const getCategoriesPaperLinkQuestions = async (): Promise<
   GetCategoriesFaqType[]
 > => {
-  const response = await ApiAxiosInstance.get<GetCategoriesFaqType[]>(
+  const response = await DevApiAxiosInstance.get<GetCategoriesFaqType[]>(
     `/categories`
   );
   return response.data;
@@ -41,7 +41,7 @@ export const useGetCategoriesPaperLinkQuestions = () => {
 };
 
 export const loginUser = async (payload: ILoginPayload) => {
-  const response = await ApiAxiosInstance.post<ILoginSuccessResponse>(
+  const response = await DevApiAxiosInstance.post<ILoginSuccessResponse | any>(
     `/authentication`,
     payload
   );

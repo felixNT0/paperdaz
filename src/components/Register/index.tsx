@@ -8,6 +8,11 @@ import visaCardIcon from "../../assets/visaCardIcon.svg";
 import amexCardIcon from "../../assets/amexCardIcon.svg";
 import discoverCardIcon from "../../assets/discoverCardIcon.svg";
 import { useAnimation } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faExclamationCircle,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   useCreateCardForUserMutation,
   useCreateSubscriptionForUserMutation,
@@ -19,9 +24,21 @@ import { ICreateUserPayload } from "../../types";
 import navigations from "../../navigations";
 
 function Register() {
-  const { mutate, isSuccess, data } = useCreateUserMutation();
-  const { mutate: validateCard, isSuccess: cardValidatedSuccessfully } =
-    useValidateCardMutation();
+  const {
+    mutateAsync,
+    isSuccess,
+    data,
+    isError: ErrorOccured,
+    error: Error,
+  } = useCreateUserMutation();
+  const {
+    mutate: validateCard,
+    isSuccess: cardValidatedSuccessfully,
+    isError,
+    isLoading,
+    error,
+  } = useValidateCardMutation();
+  console.log(Error);
   const { mutateAsync: createCard, isSuccess: cardCreatedSuccessfully } =
     useCreateCardForUserMutation();
   const {
@@ -98,9 +115,6 @@ function Register() {
       return numericValue;
     }
   };
-  const handleSubmitCreateUser = (values: ICreateUserPayload) => {
-    mutate(values);
-  };
 
   const handleSubmitValidateCard = (values: any) => {
     const month = values.card_expire.substring(0, 2);
@@ -119,8 +133,9 @@ function Register() {
     validateCard(payload);
   };
 
-  const handleNext = () => {
+  const handleNext = (values: ICreateUserPayload) => {
     if (currentStepIndex < steps.length - 1) {
+      localStorage.setItem("userDetails", JSON.stringify(values));
       setCurrentStepIndex(currentStepIndex + 1);
     }
   };
@@ -129,6 +144,18 @@ function Register() {
     if (currentStepIndex > 0) {
       setCurrentStepIndex(currentStepIndex - 1);
     }
+  };
+
+  const createUser = async () => {
+    const userDetails = localStorage.getItem("userDetails");
+    let values;
+
+    if (userDetails) {
+      values = JSON.parse(userDetails);
+    } else {
+      values = initialValuesToCreateCard;
+    }
+    await mutateAsync(values);
   };
 
   const createCardAndSubscription = async () => {
@@ -147,6 +174,7 @@ function Register() {
       ...others,
       userId: userId,
     };
+
     await createCard(newCard);
     await createSubscription({ ...tableSubscriptionPayload, userId: userId });
   };
@@ -154,25 +182,31 @@ function Register() {
   useEffect(() => {
     if (isSuccess) {
       localStorage.setItem("userId", data?.id);
-      handleNext();
+      createCardAndSubscription();
     }
   }, [isSuccess]);
 
   useEffect(() => {
     if (cardValidatedSuccessfully) {
-      createCardAndSubscription();
+      createUser();
     }
   }, [cardValidatedSuccessfully]);
 
   useEffect(() => {
     if (cardSubscriptionSuccessfully && cardCreatedSuccessfully) {
-      localStorage.removeItem("userId");
-      localStorage.removeItem("card");
       navigate(navigations.LANDING_PAGE, {
         state: { subscriptionSuccessful: true },
       });
+      toggleRegisterModal();
     }
   }, [cardCreatedSuccessfully, cardSubscriptionSuccessfully]);
+  useEffect(() => {
+    if (!isRegisterModalOpen) {
+      localStorage.removeItem("userId");
+      localStorage.removeItem("card");
+      localStorage.removeItem("userDetails");
+    }
+  }, [isRegisterModalOpen]);
 
   return (
     <RegisterModal
@@ -196,7 +230,7 @@ function Register() {
               <Formik
                 initialValues={initialValuesToCreateUser}
                 validationSchema={validationSchemaToCreateUser}
-                onSubmit={handleSubmitCreateUser}
+                onSubmit={handleNext}
               >
                 {(formik) => {
                   const { isValid, dirty, values, handleChange, handleBlur } =
@@ -225,7 +259,7 @@ function Register() {
                           <ErrorMessage
                             name="companyName"
                             component="p"
-                            className="mt-2 text-sm text-red-600 mb-3"
+                            className="mt-1 text-sm text-red-600 mb-3"
                           />
                         </div>
                         <div>
@@ -249,7 +283,7 @@ function Register() {
                           <ErrorMessage
                             name="firstName"
                             component="p"
-                            className="mt-2 text-sm text-red-600 mb-3"
+                            className="mt-1 text-sm text-red-600 mb-3"
                           />
                         </div>
                         <div>
@@ -273,7 +307,7 @@ function Register() {
                           <ErrorMessage
                             name="lastName"
                             component="p"
-                            className="mt-2 text-sm text-red-600 mb-3"
+                            className="mt-1 text-sm text-red-600 mb-3"
                           />
                         </div>
                         <div>
@@ -297,7 +331,7 @@ function Register() {
                           <ErrorMessage
                             name="email"
                             component="p"
-                            className="mt-2 text-sm text-red-600 mb-3"
+                            className="mt-1 text-sm text-red-600 mb-3"
                           />
                         </div>
                         <div>
@@ -321,14 +355,13 @@ function Register() {
                           <ErrorMessage
                             name="phone"
                             component="p"
-                            className="mt-2 text-sm text-red-600 mb-3"
+                            className="mt-1 text-sm text-red-600 mb-3"
                           />
                         </div>
                       </div>
 
                       <div>
                         <button
-                          // onClick={handleNext}
                           disabled={!isValid || !dirty}
                           type="submit"
                           className={`group relative w-full flex justify-center max-sm:py-2 py-3 px-4  text-sm font-medium rounded-md text-white ${
@@ -367,6 +400,21 @@ function Register() {
                   <img src={discoverCardIcon} alt="discoverCardIcon" />
                 </div>
               </div>
+              {(isError || ErrorOccured) && (
+                <div className="bg-red-500 text-white my-3 p-3 rounded-md shadow-md">
+                  <div className="flex items-center">
+                    <div className="mr-2">
+                      <FontAwesomeIcon icon={faExclamationCircle} />
+                    </div>
+                    {isError && (
+                      <p>{(error as any)?.response?.data?.message}</p>
+                    )}
+                    {ErrorOccured && (
+                      <p>{(Error as any)?.response?.data?.errors[0].message}</p>
+                    )}
+                  </div>
+                </div>
+              )}
               <Formik
                 initialValues={initialValuesToCreateCard}
                 validationSchema={validationSchemaToValidateCard}
@@ -404,7 +452,7 @@ function Register() {
                           <ErrorMessage
                             name="card_holder_name"
                             component="p"
-                            className="mt-2 text-sm text-red-600 mb-3"
+                            className="mt-1 text-sm text-red-600 mb-3"
                           />
                         </div>
                         <div>
@@ -433,7 +481,7 @@ function Register() {
                           <ErrorMessage
                             name="card_number"
                             component="p"
-                            className="mt-2 text-sm text-red-600 mb-3"
+                            className="mt-1 text-sm text-red-600 mb-3"
                           />
                         </div>
                         <div className="flex flex-row items-center justify-between">
@@ -462,7 +510,7 @@ function Register() {
                             <ErrorMessage
                               name="card_expire"
                               component="p"
-                              className="mt-2 text-sm text-red-600 mb-3"
+                              className="mt-1 text-sm text-red-600 mb-3"
                             />
                           </div>
                           <div>
@@ -487,7 +535,7 @@ function Register() {
                             <ErrorMessage
                               name="cvv"
                               component="p"
-                              className="mt-2 text-sm text-red-600 mb-3"
+                              className="mt-1 text-sm text-red-600 mb-3"
                             />
                           </div>
                         </div>
@@ -495,14 +543,21 @@ function Register() {
 
                       <div>
                         <button
-                          disabled={!isValid || !dirty}
+                          disabled={!isValid || !dirty || isLoading}
                           type="submit"
-                          className={`group relative w-full flex justify-center max-sm:py-2 py-3 px-4  text-sm font-medium rounded-md text-white ${
-                            !isValid || !dirty
+                          className={`group relative w-full flex justify-center items-center max-sm:py-2 py-3 px-4  text-sm font-medium rounded-md text-white ${
+                            !isValid || !dirty || isLoading
                               ? "bg-gray-300 cursor-not-allowed"
                               : "bg-primary hover:bg-primary"
                           } cursor-pointer `}
                         >
+                          {isLoading && (
+                            <FontAwesomeIcon
+                              icon={faSpinner}
+                              spin
+                              className="mr-3"
+                            />
+                          )}{" "}
                           Pay
                         </button>
                       </div>
