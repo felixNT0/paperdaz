@@ -41,3 +41,18 @@ code {
     scrollbar-width: auto;
   }
 }
+
+/* CSS or SCSS */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #fff;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #77c360;
+  border-radius: 50px;
+}

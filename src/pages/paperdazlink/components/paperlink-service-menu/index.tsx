@@ -31,7 +31,7 @@ function PaperLinkServiceMenu() {
     },
     {
       icon: paperLinkIcon,
-      title: "Paperlink",
+      title: "PaperLink",
       description:
         "Turn paper into a PaperLink in minutes, simply upload a file for users to complete, sign, or confirm.",
       number: "3",
@@ -91,7 +91,7 @@ function PaperLinkServiceMenu() {
       </div>
       <div
         style={{ justifyContent: "center", alignItems: "center" }}
-        className="grid grid-cols-2 gap-5 max-md:flex max-md:gap-2 max-md:flex-col items-center h-[500px] max-md:h-[350px] overflow-y-scroll "
+        className="grid grid-cols-2 gap-5 max-md:flex max-md:gap-2 max-md:flex-col items-center h-[500px] max-md:h-[350px] overflow-y-scroll custom-scrollbar"
       >
         {serviceMenu.map((item, index) => (
           <Card

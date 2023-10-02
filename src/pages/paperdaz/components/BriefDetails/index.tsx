@@ -42,7 +42,7 @@ function BriefDetails() {
           <Card
             icon={uploadIcon}
             title="Upload PDF files"
-            description="Login to admin console, click on Paperlink Page to upload PDF files that is normally printed and handed out.  Paperdaz API will automatically create links for each file uploaded. Each upload takes seconds to process."
+            description="Login to admin console, click on PaperLink Page to upload PDF files that is normally printed and handed out.  Paperdaz API will automatically create links for each file uploaded. Each upload takes seconds to process."
           />
           <div className="sm:mb-[50px] md:hidden xl:block lg:mt-24">
             <img
@@ -55,8 +55,8 @@ function BriefDetails() {
           <div>
             <Card
               icon={shareIcon}
-              title="Share Paperlink"
-              description="Paper files are now paperlinks.  Share it to clients, patients, employees access via email, link, QR code. "
+              title="Share PaperLink"
+              description="Paper files are now paperLinks.  Share it to clients, patients, employees access via email, link, QR code. "
             />
           </div>
         </div>

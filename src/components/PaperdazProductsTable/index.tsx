@@ -23,7 +23,7 @@ const PaperdazProductsTable = ({
 
   const [items, setItems] = useState([
     { feature: "Team Member", price: 2, quantity: 1 },
-    { feature: "Paperlink Page", price: 2, quantity: 1 },
+    { feature: "PaperLink Page", price: 2, quantity: 1 },
     {
       feature: "Fillable PDF",
       otherFeature: "(One time charge)",
@@ -52,13 +52,15 @@ const PaperdazProductsTable = ({
     if (updatedItems[index].quantity > 0) {
       updatedItems[index].quantity--;
       if (
-        updatedItems[index].feature === "Team Member" ||
-        updatedItems[index].feature === "Paperlink Page"
+        (updatedItems[index].feature === "Team Member" ||
+          updatedItems[index].feature === "PaperLink Page") &&
+        updatedItems[index].quantity === 0
       ) {
-        updatedItems[index].quantity = 1; // Prevent going below 1
+        updatedItems[index].quantity = 1;
       }
-      setItems(updatedItems);
     }
+
+    setItems(updatedItems);
   };
 
   const toggleSwitch = () => {

@@ -1,41 +1,41 @@
 import Icon from "../../../../components/Icon";
 import paperdazLabIcon from "../../../../assets/paperdazlabIcon.svg";
 import PaperdazLabCard from "./PaperdazLabCard";
-import SigninlinkIcon from "../../../../assets/SigninlinkIcon.svg";
+import SigninLinkIcon from "../../../../assets/SigninlinkIcon.svg";
 import HostLinkIcon from "../../../../assets/Hostlink.svg";
-import TimelinkIcon from "../../../../assets/TimelinkIcon.svg";
-import RxlinkIcon from "../../../../assets/RxLInkIcon.svg";
+import TimeLinkIcon from "../../../../assets/TimelinkIcon.svg";
+import RxLinkIcon from "../../../../assets/RxLInkIcon.svg";
 
 function PaperdazLap() {
   const cardItems = [
     {
       id: 1,
-      icon: SigninlinkIcon,
-      title: "Signinlink",
+      icon: SigninLinkIcon,
+      title: "SigninLink",
       description:
-        "Signinlink visitors can sign in on a tablet, instead of a sheet of paper.",
+        "SigninLink visitors can sign in on a tablet, instead of a sheet of paper.",
     },
     {
       id: 2,
       icon: HostLinkIcon,
-      title: "Hostlink",
+      title: "HostLink",
       description:
-        "Allow restaurateurs to put their name on Hostlink with their mobile device instead of writing on a paper.",
+        "Allow restaurateurs to put their name on HostLink with their mobile device instead of writing on a paper.",
     },
     {
       id: 3,
-      icon: TimelinkIcon,
-      title: "Timelink",
+      icon: TimeLinkIcon,
+      title: "TimeLink",
       description:
-        "Time sheet is too much of a hassle. Employees can clock in and out via mobile device on Timelink.",
+        "Time sheet is too much of a hassle. Employees can clock in and out via mobile device on TimeLink.",
     },
     {
       id: 4,
-      icon: RxlinkIcon,
-      title: "Rxlink",
+      icon: RxLinkIcon,
+      title: "RxLink",
       iconWidth: "w-10",
       description:
-        "Patient information on a digital device through Rxlink is more secure than patients writing personal information on paper sheets.",
+        "Patient information on a digital device through RxLink is more secure than patients writing personal information on paper sheets.",
     },
   ];
   return (

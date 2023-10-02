@@ -14,7 +14,7 @@ function PaperLinkFeatures() {
       icon: businessIcon,
       defaultColor: true,
       description:
-        "Paid account has a Business Page to display all Paperlinks for patients, clients and employee access.",
+        "Paid account has a Business Page to display all PaperLinks for patients, clients and employee access.",
     },
     {
       id: 2,
@@ -46,7 +46,7 @@ function PaperLinkFeatures() {
       icon: shareIcon,
       addPadding: true,
       description:
-        "Paper files are now paperlinks. Share it to clients, patients, employees access via email, link, QR code.",
+        "Paper files are now paperLinks. Share it to clients, patients, employees access via email, link, QR code.",
     },
   ];
   return (
@@ -59,7 +59,7 @@ function PaperLinkFeatures() {
           <div className="p-20 max-sm:flex max-sm:flex-col max-sm:p-5 max-2xl:grid max-2xl:grid-cols-2 max-2xl:gap-10 2xl:grid 2xl:grid-cols-3 2xl:gap-14 ">
             <div>
               <h1 className="text-black text-[30px]  max-sm:text-center max-[992px]:mb-10">
-                Paperlink <span className="text-primary">Features</span>
+                PaperLink <span className="text-primary">Features</span>
               </h1>
               <p className="text-black font-bold mt-5 max-sm:text-center">
                 Don’t hand paper at the office provide a link.
