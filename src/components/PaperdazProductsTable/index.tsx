@@ -11,8 +11,6 @@ const PaperdazProductsTable = ({
 }: {
   toggleOpenModal: () => void;
 }) => {
-  // const navigate = useNavigate();
-
   const { toggleRegisterModal } = useAppContext();
 
   const [isSwitched, setIsSwitched] = useState(false);
