@@ -14,7 +14,7 @@ function WhatPaperdazaLinkDoes() {
       id="paperdaz-link"
     >
       <h3 className="text-[#77C360] text-center text-[30px] font-bold">
-        What is <span className="text-black">PaperLink?</span>
+        What is a <span className="text-black">PaperLink?</span>
       </h3>
       <div className="mt-10 flex flex-col lg:flex-row  lg:justify-around max-lg:justify-center items-center">
         <img
