@@ -163,7 +163,7 @@ const PaperdazProductsTable = ({
                   </thead>
                   <tbody className="bg-white max-sm:text-sm">
                     <tr className="pt-10 max-sm:text-sm">
-                      <td className="p-2 py-7 max-sm:text-sm items-center">
+                      <td className="p-2 py-7 pl-3 max-sm:text-sm items-center">
                         Business Page
                       </td>
                       <td className="p-2 py-7 text-center items-center ">
