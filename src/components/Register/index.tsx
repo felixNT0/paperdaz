@@ -17,6 +17,7 @@ import {
   useCreateCardForUserMutation,
   useCreateSubscriptionForUserMutation,
   useCreateUserMutation,
+  useGetUserByEmailQuery,
   useValidateCardMutation,
 } from "../../api/services/api.service";
 import { useNavigate } from "react-router-dom";
@@ -24,27 +25,6 @@ import { ICreateUserPayload } from "../../types";
 import navigations from "../../navigations";
 
 function Register() {
-  const {
-    mutateAsync,
-    isSuccess,
-    data,
-    isError: ErrorOccured,
-    error: Error,
-  } = useCreateUserMutation();
-  const {
-    mutate: validateCard,
-    isSuccess: cardValidatedSuccessfully,
-    isError,
-    isLoading,
-    error,
-  } = useValidateCardMutation();
-  console.log(Error);
-  const { mutateAsync: createCard, isSuccess: cardCreatedSuccessfully } =
-    useCreateCardForUserMutation();
-  const {
-    mutateAsync: createSubscription,
-    isSuccess: cardSubscriptionSuccessfully,
-  } = useCreateSubscriptionForUserMutation();
   const initialValuesToCreateUser = {
     email: "",
     firstName: "",
@@ -60,6 +40,41 @@ function Register() {
     action: "testCard",
     userId: null,
   };
+  const {
+    mutateAsync,
+    isSuccess,
+    data,
+    isError: ErrorOccured,
+    error: Error,
+  } = useCreateUserMutation();
+  const {
+    mutate: validateCard,
+    isSuccess: cardValidatedSuccessfully,
+    isError,
+    isLoading,
+    error,
+  } = useValidateCardMutation();
+
+  const userDetails = localStorage.getItem("userDetails");
+
+  let values: any;
+
+  if (userDetails) {
+    values = JSON.parse(userDetails);
+  } else {
+    values = initialValuesToCreateCard;
+  }
+
+  const { data: userEmail, isSuccess: isUserByEmailSuccessful } =
+    useGetUserByEmailQuery(ErrorOccured ? values?.email : "");
+
+  const { mutateAsync: createCard, isSuccess: cardCreatedSuccessfully } =
+    useCreateCardForUserMutation();
+  const {
+    mutateAsync: createSubscription,
+    isSuccess: cardSubscriptionSuccessfully,
+  } = useCreateSubscriptionForUserMutation();
+
   const steps = [{ key: 1 }, { key: 2 }];
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
@@ -147,14 +162,6 @@ function Register() {
   };
 
   const createUser = async () => {
-    const userDetails = localStorage.getItem("userDetails");
-    let values;
-
-    if (userDetails) {
-      values = JSON.parse(userDetails);
-    } else {
-      values = initialValuesToCreateCard;
-    }
     await mutateAsync(values);
   };
 
@@ -172,19 +179,24 @@ function Register() {
     const { action, ...others } = card;
     const newCard = {
       ...others,
-      userId: userId,
+      userId: isError ? userEmail?.data[0]?.id : userId,
     };
 
     await createCard(newCard);
-    await createSubscription({ ...tableSubscriptionPayload, userId: userId });
+    await createSubscription({
+      ...tableSubscriptionPayload,
+      userId: isError ? userEmail?.data[0]?.id : userId,
+    });
   };
 
   useEffect(() => {
     if (isSuccess) {
       localStorage.setItem("userId", data?.id);
       createCardAndSubscription();
+    } else if (ErrorOccured && isUserByEmailSuccessful) {
+      createCardAndSubscription();
     }
-  }, [isSuccess]);
+  }, [isSuccess, isUserByEmailSuccessful, ErrorOccured]);
 
   useEffect(() => {
     if (cardValidatedSuccessfully) {
@@ -200,6 +212,7 @@ function Register() {
       toggleRegisterModal();
     }
   }, [cardCreatedSuccessfully, cardSubscriptionSuccessfully]);
+
   useEffect(() => {
     if (!isRegisterModalOpen) {
       localStorage.removeItem("userId");
@@ -344,11 +357,16 @@ function Register() {
                           <Field
                             id="phone"
                             name="phone"
-                            type="text"
+                            type="tel"
                             value={values.phone}
                             onBlur={handleBlur}
-                            onChange={handleChange}
-                            autoComplete="text"
+                            onInput={(e: any) => {
+                              e.target.value = e.target.value.replace(
+                                /\D/g,
+                                ""
+                              );
+                            }}
+                            autoComplete="tel"
                             placeholder="Contact number"
                             className="appearance-none rounded-lg relative block w-full max-sm:py-2 py-3 px-4 border text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary focus:border-primary sm:text-sm mb-5"
                           />
@@ -409,9 +427,6 @@ function Register() {
                     {isError && (
                       <p>{(error as any)?.response?.data?.message}</p>
                     )}
-                    {ErrorOccured && (
-                      <p>{(Error as any)?.response?.data?.errors[0].message}</p>
-                    )}
                   </div>
                 </div>
               )}
@@ -471,7 +486,7 @@ function Register() {
                             value={formatCardNumber(values.card_number)}
                             onChange={(e: any) => {
                               const formattedValue = formatCardNumber(
-                                e.target.value
+                                e.target.value.replace(/\D/g, "")
                               );
                               setFieldValue("card_number", formattedValue);
                             }}
@@ -501,7 +516,7 @@ function Register() {
                               value={formatExpirationDate(values.card_expire)}
                               onChange={(e: any) => {
                                 const formattedValue = formatExpirationDate(
-                                  e.target.value
+                                  e.target.value.replace(/[^\d/]/g, "")
                                 );
                                 setFieldValue("card_expire", formattedValue);
                               }}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import productCheckIcon from "../../assets/produceCheckIcon.svg";
 import productMenuIcon from "../../assets/produceMenuIcon.svg";
 import starIcon from "../../assets/greenStar.svg";
@@ -40,6 +40,8 @@ const PaperdazProductsTable = ({
 
   const incrementQuantity = (index: number) => {
     const updatedItems = [...items];
+    if (updatedItems[index].feature === "White Glove Service" && !isChecked)
+      return;
     updatedItems[index].quantity++;
 
     setItems(updatedItems);
@@ -47,6 +49,9 @@ const PaperdazProductsTable = ({
 
   const decrementQuantity = (index: number) => {
     const updatedItems = [...items];
+    if (updatedItems[index].feature === "White Glove Service" && !isChecked)
+      return;
+
     if (updatedItems[index].quantity > 0) {
       updatedItems[index].quantity--;
       if (
@@ -64,18 +69,9 @@ const PaperdazProductsTable = ({
   const toggleSwitch = () => {
     setIsSwitched(!isSwitched);
   };
-  const toggleCheck = (index: number) => {
-    const updatedItems = [...items];
 
-    if (!isChecked) {
-      updatedItems[index].quantity = items[1].quantity;
-    } else {
-      updatedItems[index].quantity = 0;
-    }
-
+  const toggleCheck = () => {
     setIsChecked(!isChecked);
-
-    setItems(updatedItems);
   };
 
   const getTotalAmount = () => {
@@ -84,8 +80,9 @@ const PaperdazProductsTable = ({
       0
     );
     const sum = total + 10;
-    const percentageTotal = sum * 0.2;
-    if (isSwitched) return sum - percentageTotal;
+    const defaultYearPrice = sum * 12;
+    const percentageDiscountTotal = defaultYearPrice * 0.2;
+    if (isSwitched) return defaultYearPrice - percentageDiscountTotal;
     return sum;
   };
 
@@ -99,6 +96,7 @@ const PaperdazProductsTable = ({
     teamMembers: items[0].quantity,
     cc: 1,
     isWhiteGloveService: isChecked,
+    whiteGloveService: items[3].quantity,
     userId: null,
     fillablePdf: items[2].quantity,
   };
@@ -195,7 +193,7 @@ const PaperdazProductsTable = ({
                             <div className="flex flex-row gap-1 items-center">
                               <input
                                 checked={isChecked}
-                                onChange={() => toggleCheck(index)}
+                                onChange={toggleCheck}
                                 type="checkbox"
                                 className="form-checkbox cursor-pointer outline-none h-4 w-4 rounded border-primary text-primary focus:ring-primary form-checkbox"
                               />
@@ -216,28 +214,18 @@ const PaperdazProductsTable = ({
                           <div className="bg-[#EFEFEF] text-center rounded-lg lg:max-w-[100px] flex flex-row  justify-center items-center p-0.5 max-sm:p-0.5">
                             <button
                               className="p-0.5 px-3.5 rounded-md max-sm:width "
-                              onClick={() => {
-                                if (item.feature !== "White Glove Service")
-                                  decrementQuantity(index);
-                              }}
+                              onClick={() => decrementQuantity(index)}
                             >
-                              {item.feature !== "White Glove Service"
-                                ? "-"
-                                : ""}
+                              -
                             </button>
                             <span className="p-0.5 px-3.5 rounded-lg bg-white">
                               {`${item.quantity} `}
                             </span>
                             <button
                               className="p-0.5 px-3.5 rounded-md "
-                              onClick={() => {
-                                if (item.feature !== "White Glove Service")
-                                  incrementQuantity(index);
-                              }}
+                              onClick={() => incrementQuantity(index)}
                             >
-                              {item.feature !== "White Glove Service"
-                                ? "+"
-                                : ""}
+                              +
                             </button>
                           </div>
                         </td>
@@ -363,7 +351,7 @@ const PaperdazProductsTable = ({
                       <div className="flex flex-row gap-1 items-center">
                         <input
                           checked={isChecked}
-                          onChange={() => toggleCheck(index)}
+                          onChange={toggleCheck}
                           type="checkbox"
                           className="form-checkbox cursor-pointer outline-none h-4 w-4 rounded border-primary text-primary focus:ring-primary form-checkbox"
                         />
@@ -382,24 +370,18 @@ const PaperdazProductsTable = ({
                     <div className="bg-[#EFEFEF] text-center rounded-lg lg:max-w-[100px] flex flex-row  justify-center items-center p-0.5 max-sm:p-0.5">
                       <button
                         className="p-0.5 px-3.5 rounded-md max-sm:px-1 "
-                        onClick={() => {
-                          if (item.feature !== "White Glove Service")
-                            decrementQuantity(index);
-                        }}
+                        onClick={() => decrementQuantity(index)}
                       >
-                        {item.feature !== "White Glove Service" ? "-" : ""}
+                        -
                       </button>
                       <span className="p-0.5 px-3.5 max-sm:px-2 rounded-lg bg-white">
                         {`${item.quantity}`}
                       </span>
                       <button
                         className="p-0.5 px-3.5 max-sm:px-1 rounded-md "
-                        onClick={() => {
-                          if (item.feature !== "White Glove Service")
-                            incrementQuantity(index);
-                        }}
+                        onClick={() => incrementQuantity(index)}
                       >
-                        {item.feature !== "White Glove Service" ? "+" : ""}
+                        +
                       </button>
                     </div>
                   </td>

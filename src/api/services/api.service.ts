@@ -12,8 +12,20 @@ import {
 import { DevApiAxiosInstance } from "../../api";
 
 const GET_ALL_FAQ_DATA = "GET_ALL_FAQ_DATA";
+const GET_USER_BY_EMAIL = "GET_USER_BY_EMAIL";
 const GET_ALL_CATEGORIES_PAPERLINK_QUESTIONS =
   "GET_ALL_CATEGORIES_PAPERLINK_QUESTIONS";
+
+const getUserByEmail = async (email: string): Promise<any> => {
+  const response = await DevApiAxiosInstance.get<any>(`/users?email=${email}`);
+  return response.data;
+};
+
+export const useGetUserByEmailQuery = (email: string) => {
+  return useQuery([GET_USER_BY_EMAIL, email], () => getUserByEmail(email), {
+    enabled: !!email && email.trim() !== "",
+  });
+};
 
 const getAllFAQ = async (): Promise<GetAllFaqType[]> => {
   const response = await DevApiAxiosInstance.get<GetAllFaqType[]>(`/faq`);
@@ -28,7 +40,7 @@ const getCategoriesPaperLinkQuestions = async (): Promise<
   GetCategoriesFaqType[]
 > => {
   const response = await DevApiAxiosInstance.get<GetCategoriesFaqType[]>(
-    `/categories`
+    `/categories?$sort[position]=1&for=paperlink`
   );
   return response.data;
 };

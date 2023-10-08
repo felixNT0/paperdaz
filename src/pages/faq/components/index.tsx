@@ -7,7 +7,7 @@ import Modal from "../../../components/modal";
 import NotificationModal from "../../../components/NotificationModal";
 import { useGetCategoriesPaperLinkQuestions } from "../../../api/services/api.service";
 import Loader from "../../../components/Loader";
-import { GetAllFaqType } from "../../../types";
+import { GetAllFaqType, GetCategoriesFaqType } from "../../../types";
 
 function FaqComponents() {
   const [activeTab, setActiveTab] = useState<number>(1);
@@ -16,6 +16,8 @@ function FaqComponents() {
   const [activeAccordionId, setActiveAccordionId] = useState<any>(null);
 
   const { data, isLoading } = useGetCategoriesPaperLinkQuestions();
+
+  console.log(data);
 
   const handleTabClick = (tabId: number) => {
     setActiveTab(tabId);
@@ -45,39 +47,29 @@ function FaqComponents() {
 
       <Tabs activeTab={activeTab} handleTabClick={handleTabClick} />
       <div className="mb-20">
-        <div className="flex flex-col mt-10 mb-7 mx-40 max-md:mx-5 max-xsm:mx-2">
-          <h3 className="text-primary ">General Questions</h3>
-          <div className="w-40 h-0.5 bg-[#565656] mt-0.5" />
-        </div>
-        <div className="flex flex-col gap-5 mb-10">
-          {data &&
-            data[0].name === "General" &&
-            data[0]?.faqs?.map(({ id, answer, question }: GetAllFaqType) => (
-              <Accordion
-                key={id}
-                open={activeAccordionId === id}
-                title={question}
-                description={answer}
-                toggleOpenAccordion={() => toggleAccordion(id)}
-              />
-            ))}
-        </div>
-      </div>
-      <div className="flex flex-col mt-10 mb-7 mx-40 max-md:mx-5 max-xsm:mx-2">
-        <h3 className="text-primary ">Billing & Address</h3>
-        <div className="w-36 h-0.5 bg-[#565656] mt-0.5" />
-      </div>
-      <div className="flex flex-col gap-5 mb-10">
         {data &&
-          data[1].name === "Billing" &&
-          data[1]?.faqs?.map(({ id, answer, question }: GetAllFaqType) => (
-            <Accordion
-              key={id}
-              open={activeAccordionId === id}
-              title={question}
-              description={answer}
-              toggleOpenAccordion={() => toggleAccordion(id)}
-            />
+          data?.map(({ name, faqs }: GetCategoriesFaqType) => (
+            <>
+              {faqs.length > 0 && (
+                <div className="flex flex-col mt-10 mb-7 mx-40 max-md:mx-5 max-xsm:mx-2">
+                  <div className="border-b border-primary w-full pb-1">
+                    <h3 className="text-primary">{name}</h3>
+                  </div>
+                </div>
+              )}
+              {faqs.length > 0 &&
+                faqs?.map(({ answer, question, id }: GetAllFaqType) => (
+                  <div className="flex flex-col gap-5 mb-10">
+                    <Accordion
+                      key={id}
+                      open={activeAccordionId === id}
+                      title={question}
+                      description={answer}
+                      toggleOpenAccordion={() => toggleAccordion(id)}
+                    />
+                  </div>
+                ))}
+            </>
           ))}
       </div>
       {isNotificationModaOpen && (
