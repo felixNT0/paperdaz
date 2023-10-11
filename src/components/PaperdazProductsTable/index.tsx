@@ -79,10 +79,13 @@ const PaperdazProductsTable = ({
       (total, item) => total + item.price * item.quantity,
       0
     );
+
     const sum = total + 10;
     const defaultYearPrice = sum * 12;
     const percentageDiscountTotal = defaultYearPrice * 0.2;
+
     if (isSwitched) return defaultYearPrice - percentageDiscountTotal;
+
     return sum;
   };
 
@@ -99,6 +102,7 @@ const PaperdazProductsTable = ({
     whiteGloveService: items[3].quantity,
     userId: null,
     fillablePdf: items[2].quantity,
+    totalAmount: getTotalAmount(),
   };
 
   useEffect(() => {

@@ -45,7 +45,6 @@ function Register() {
     isSuccess,
     data,
     isError: ErrorOccured,
-    error: Error,
   } = useCreateUserMutation();
   const {
     mutate: validateCard,
@@ -179,13 +178,15 @@ function Register() {
     const { action, ...others } = card;
     const newCard = {
       ...others,
-      userId: isError ? userEmail?.data[0]?.id : userId,
+      userId: ErrorOccured ? userEmail?.data[0]?.id : userId,
     };
+
+    const { totalAmount, ...subscriptionPayload } = tableSubscriptionPayload;
 
     await createCard(newCard);
     await createSubscription({
-      ...tableSubscriptionPayload,
-      userId: isError ? userEmail?.data[0]?.id : userId,
+      ...subscriptionPayload,
+      userId: ErrorOccured ? userEmail?.data[0]?.id : userId,
     });
   };
 
@@ -404,7 +405,10 @@ function Register() {
               <div className="flex flex-row  items-center justify-between text-black  pb-2 border-b-2 border-b-[#B9B8C1]">
                 <h2>Total due</h2>
                 <p>
-                  $22 <span className="text-[#979797]">monthly</span>
+                  {tableSubscriptionPayload?.totalAmount}{" "}
+                  <span className="text-[#979797]">
+                    {tableSubscriptionPayload?.plan}
+                  </span>
                 </p>
               </div>
               <div className="flex flex-row items-center justify-between mt-3">
@@ -418,7 +422,7 @@ function Register() {
                   <img src={discoverCardIcon} alt="discoverCardIcon" />
                 </div>
               </div>
-              {(isError || ErrorOccured) && (
+              {isError && (
                 <div className="bg-red-500 text-white my-3 p-3 rounded-md shadow-md">
                   <div className="flex items-center">
                     <div className="mr-2">
