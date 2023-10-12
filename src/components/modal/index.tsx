@@ -22,7 +22,7 @@ function Modal({ isModalOpen, toggleOpenModal, children, width }: Props) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           onClick={closeModal}
-          className="fixed top-5 max-sm:top-5 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-70 z-40"
+          className="fixed top-5 max-sm:top-5 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-70 z-40 backdrop-blur-sm"
         >
           <motion.div
             initial={{ scale: 0.5, opacity: 0 }}

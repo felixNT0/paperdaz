@@ -17,8 +17,6 @@ function FaqComponents() {
 
   const { data, isLoading } = useGetCategoriesPaperLinkQuestions();
 
-  console.log(data);
-
   const handleTabClick = (tabId: number) => {
     setActiveTab(tabId);
     if (tabId !== 1) {

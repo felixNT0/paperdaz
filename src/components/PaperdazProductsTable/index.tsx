@@ -70,8 +70,16 @@ const PaperdazProductsTable = ({
     setIsSwitched(!isSwitched);
   };
 
-  const toggleCheck = () => {
+  const toggleCheck = (index: number) => {
+    const updatedItems = [...items];
+
+    if (!isChecked) {
+      updatedItems[index].quantity = items[1].quantity;
+    } else {
+      updatedItems[index].quantity = 0;
+    }
     setIsChecked(!isChecked);
+    setItems(updatedItems);
   };
 
   const getTotalAmount = () => {
@@ -99,7 +107,7 @@ const PaperdazProductsTable = ({
     teamMembers: items[0].quantity,
     cc: 1,
     isWhiteGloveService: isChecked,
-    whiteGloveService: items[3].quantity,
+    whiteGloveService: items[1].quantity,
     userId: null,
     fillablePdf: items[2].quantity,
     totalAmount: getTotalAmount(),
@@ -197,7 +205,7 @@ const PaperdazProductsTable = ({
                             <div className="flex flex-row gap-1 items-center">
                               <input
                                 checked={isChecked}
-                                onChange={toggleCheck}
+                                onChange={() => toggleCheck(index)}
                                 type="checkbox"
                                 className="form-checkbox cursor-pointer outline-none h-4 w-4 rounded border-primary text-primary focus:ring-primary form-checkbox"
                               />
@@ -220,16 +228,23 @@ const PaperdazProductsTable = ({
                               className="p-0.5 px-3.5 rounded-md max-sm:width "
                               onClick={() => decrementQuantity(index)}
                             >
-                              -
+                              {item.feature !== "White Glove Service"
+                                ? "-"
+                                : ""}
                             </button>
                             <span className="p-0.5 px-3.5 rounded-lg bg-white">
-                              {`${item.quantity} `}
+                              {item.feature === "White Glove Service" &&
+                              isChecked
+                                ? `${items[1].quantity}`
+                                : `${item.quantity}`}
                             </span>
                             <button
                               className="p-0.5 px-3.5 rounded-md "
                               onClick={() => incrementQuantity(index)}
                             >
-                              +
+                              {item.feature !== "White Glove Service"
+                                ? "+"
+                                : ""}
                             </button>
                           </div>
                         </td>
@@ -355,7 +370,7 @@ const PaperdazProductsTable = ({
                       <div className="flex flex-row gap-1 items-center">
                         <input
                           checked={isChecked}
-                          onChange={toggleCheck}
+                          onChange={() => toggleCheck(index)}
                           type="checkbox"
                           className="form-checkbox cursor-pointer outline-none h-4 w-4 rounded border-primary text-primary focus:ring-primary form-checkbox"
                         />
@@ -376,16 +391,18 @@ const PaperdazProductsTable = ({
                         className="p-0.5 px-3.5 rounded-md max-sm:px-1 "
                         onClick={() => decrementQuantity(index)}
                       >
-                        -
+                        {item.feature !== "White Glove Service" ? "-" : ""}
                       </button>
                       <span className="p-0.5 px-3.5 max-sm:px-2 rounded-lg bg-white">
-                        {`${item.quantity}`}
+                        {item.feature === "White Glove Service" && isChecked
+                          ? `${items[1].quantity}`
+                          : `${item.quantity}`}
                       </span>
                       <button
                         className="p-0.5 px-3.5 max-sm:px-1 rounded-md "
                         onClick={() => incrementQuantity(index)}
                       >
-                        +
+                        {item.feature !== "White Glove Service" ? "+" : ""}
                       </button>
                     </div>
                   </td>

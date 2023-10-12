@@ -67,11 +67,16 @@ function Register() {
   const { data: userEmail, isSuccess: isUserByEmailSuccessful } =
     useGetUserByEmailQuery(ErrorOccured ? values?.email : "");
 
-  const { mutateAsync: createCard, isSuccess: cardCreatedSuccessfully } =
-    useCreateCardForUserMutation();
+  const {
+    mutateAsync: createCard,
+    isSuccess: cardCreatedSuccessfully,
+    isLoading: cardCreateCard,
+  } = useCreateCardForUserMutation();
+
   const {
     mutateAsync: createSubscription,
     isSuccess: cardSubscriptionSuccessfully,
+    isLoading: cardSubscriptionIsLoading,
   } = useCreateSubscriptionForUserMutation();
 
   const steps = [{ key: 1 }, { key: 2 }];
@@ -422,14 +427,21 @@ function Register() {
                   <img src={discoverCardIcon} alt="discoverCardIcon" />
                 </div>
               </div>
-              {isError && (
-                <div className="bg-red-500 text-white my-3 p-3 rounded-md shadow-md">
+              {(isError || isUserByEmailSuccessful) && (
+                <div
+                  className={`${
+                    isUserByEmailSuccessful ? "bg-primary" : "bg-red-500"
+                  }  text-white my-3 p-3 rounded-md shadow-md`}
+                >
                   <div className="flex items-center">
                     <div className="mr-2">
                       <FontAwesomeIcon icon={faExclamationCircle} />
                     </div>
                     {isError && (
                       <p>{(error as any)?.response?.data?.message}</p>
+                    )}
+                    {isUserByEmailSuccessful && (
+                      <p>Registering Please wait...</p>
                     )}
                   </div>
                 </div>
@@ -562,15 +574,27 @@ function Register() {
 
                       <div>
                         <button
-                          disabled={!isValid || !dirty || isLoading}
+                          disabled={
+                            !isValid ||
+                            !dirty ||
+                            isLoading ||
+                            cardSubscriptionIsLoading ||
+                            cardCreateCard
+                          }
                           type="submit"
                           className={`group relative w-full flex justify-center items-center max-sm:py-2 py-3 px-4  text-sm font-medium rounded-md text-white ${
-                            !isValid || !dirty || isLoading
+                            !isValid ||
+                            !dirty ||
+                            isLoading ||
+                            cardSubscriptionIsLoading ||
+                            cardCreateCard
                               ? "bg-gray-300 cursor-not-allowed"
                               : "bg-primary hover:bg-primary"
                           } cursor-pointer `}
                         >
-                          {isLoading && (
+                          {(isLoading ||
+                            cardSubscriptionIsLoading ||
+                            cardCreateCard) && (
                             <FontAwesomeIcon
                               icon={faSpinner}
                               spin
